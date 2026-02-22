@@ -1,0 +1,56 @@
+{
+  "kind": "build_request",
+  "title": "Replace founder section placeholder image with uploaded photo",
+  "projectName": "Yadav Tech",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-14",
+      "text": "Replace the founder profile image in the About Founder section (located at XPath /html[1]/body[1]/div[1]/div[1]/div[2]/main[1]/section[2]/div[1]/div[1]/div[1]/div[1]/img[1]) with the uploaded founder photo",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Add this picture"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The founder image element at the specified XPath displays the uploaded photo of Nitesh Kumar Yadav",
+        "The image maintains proper aspect ratio and fits within the existing glassmorphism card design",
+        "The image loads correctly and displays on all device breakpoints (desktop, tablet, mobile)"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Ensure the new founder photo is stored as a static asset in frontend/public/assets/generated and referenced correctly in the AboutFounder component",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The founder photo is saved to frontend/public/assets/generated directory",
+        "The AboutFounder component references the correct asset path",
+        "No console errors or broken image links appear when the page loads"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify the AboutFounder component structure or layout beyond updating the image source",
+    "Preserve existing glassmorphism styling, scroll animations, and responsive design"
+  ],
+  "nonGoals": [
+    "Changing any other images on the website",
+    "Modifying the founder's name, title, bio text, or quote",
+    "Altering the section layout or card design"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Professional portrait photo of Nitesh Kumar Yadav wearing a Calvin Klein hoodie, centered composition with clean background (founder-nitesh.dim_400x400.png)"
+    ],
+    "edits": []
+  }
+}
