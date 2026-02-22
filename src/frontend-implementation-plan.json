@@ -1,37 +1,219 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Replace founder section placeholder image with uploaded photo",
+  "title": "Make website fully responsive for mobile and desktop",
   "requirements": [
     {
-      "id": "REQ-14",
-      "summary": "Replace the founder profile image in the About Founder section with the uploaded founder photo",
+      "id": "REQ-1",
+      "summary": "Update Navigation component to ensure mobile menu is fully functional with proper touch interactions and responsive breakpoints",
       "acceptanceCriteria": [
-        "The founder image element at the specified XPath displays the uploaded photo of Nitesh Kumar Yadav",
-        "The image maintains proper aspect ratio and fits within the existing glassmorphism card design",
-        "The image loads correctly and displays on all device breakpoints (desktop, tablet, mobile)"
+        "Mobile navigation menu opens and closes smoothly on touch devices",
+        "Navigation links work correctly on mobile screens",
+        "Menu adapts properly at tablet and desktop breakpoints"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/AboutFounder.tsx",
+          "path": "frontend/src/components/Navigation.tsx",
           "operation": "modify",
-          "description": "Update the img element's src attribute to reference the generated founder photo at frontend/public/assets/generated/founder-nitesh.dim_400x400.png. Preserve existing className, alt text, and all styling attributes while only changing the image source path."
+          "description": "Add responsive mobile menu with hamburger toggle, ensure smooth transitions and touch-friendly interactions. Implement proper breakpoint handling for tablet and desktop views. Increase touch target sizes for mobile buttons and links to meet minimum 44x44px standard."
         }
       ]
     },
     {
-      "id": "REQ-15",
-      "summary": "Ensure the new founder photo is stored as a static asset and referenced correctly",
+      "id": "REQ-2",
+      "summary": "Optimize HeroSection for mobile devices with responsive text sizing, button layout, and 3D sphere performance",
       "acceptanceCriteria": [
-        "The founder photo is saved to frontend/public/assets/generated directory",
-        "The AboutFounder component references the correct asset path",
-        "No console errors or broken image links appear when the page loads"
+        "Hero text scales appropriately on small screens (320px+)",
+        "CTA buttons stack vertically on mobile with proper spacing",
+        "3D AI sphere renders efficiently on mobile devices without performance issues"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/HeroSection.tsx",
+          "operation": "modify",
+          "description": "Implement responsive typography using Tailwind's text-* utilities with mobile-first approach. Stack CTA buttons vertically on mobile with proper spacing, arrange horizontally on tablet+. Add responsive sizing for the 3D sphere container to prevent overflow on small screens."
+        },
+        {
+          "path": "frontend/src/components/AISphereTHREE.tsx",
+          "operation": "modify",
+          "description": "Optimize 3D sphere rendering for mobile by reducing particle count and animation complexity on smaller screens. Implement viewport-based performance scaling to maintain smooth 30+ FPS on mobile devices. Consider using reduced quality settings or simplified geometry for mobile."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Ensure ServicesSection grid adapts responsively from single column on mobile to multi-column layout on tablet and desktop",
+      "acceptanceCriteria": [
+        "Service cards display in single column on mobile (< 640px)",
+        "Cards arrange in 2 columns on tablets (640px - 1024px)",
+        "Cards display in 3 columns on desktop (> 1024px)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ServicesSection.tsx",
+          "operation": "modify",
+          "description": "Update grid layout to use responsive Tailwind classes: grid-cols-1 for mobile, sm:grid-cols-2 for tablet, lg:grid-cols-3 for desktop. Ensure proper gap spacing scales appropriately across breakpoints."
+        },
+        {
+          "path": "frontend/src/components/ServiceCard.tsx",
+          "operation": "modify",
+          "description": "Ensure card content scales properly on mobile with responsive padding and text sizing. Verify icon sizes and spacing work well on small screens while maintaining visual hierarchy."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Make PricingSection pricing cards responsive with proper stacking on mobile and grid layout on desktop",
+      "acceptanceCriteria": [
+        "Pricing cards stack vertically on mobile screens",
+        "Cards arrange in 2x2 grid on tablets",
+        "Cards display in horizontal row on large desktop screens",
+        "Text and pricing remain readable at all screen sizes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PricingSection.tsx",
+          "operation": "modify",
+          "description": "Implement responsive grid layout: grid-cols-1 for mobile, md:grid-cols-2 for tablet (2x2), xl:grid-cols-4 for large desktop (horizontal row). Adjust gap spacing for each breakpoint to maintain visual balance."
+        },
+        {
+          "path": "frontend/src/components/PricingCard.tsx",
+          "operation": "modify",
+          "description": "Optimize card internal layout for mobile with responsive padding, font sizes, and feature list spacing. Ensure pricing text remains prominent and readable on small screens. Make \"Get Started\" button full-width on mobile for better touch accessibility."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Optimize ProductShowcase mockup cards for mobile viewing with appropriate image sizing and touch interactions",
+      "acceptanceCriteria": [
+        "Mockup images scale properly on mobile without overflow",
+        "Cards are touch-friendly with appropriate spacing",
+        "Lazy loading works efficiently on mobile connections"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ProductShowcase.tsx",
+          "operation": "modify",
+          "description": "Update grid layout to be fully responsive: grid-cols-1 on mobile, sm:grid-cols-2 on tablet, lg:grid-cols-3 on desktop. Adjust gap spacing and ensure proper image container constraints to prevent overflow on small screens."
+        },
+        {
+          "path": "frontend/src/components/MockupCard.tsx",
+          "operation": "modify",
+          "description": "Ensure images use responsive sizing with proper aspect ratio constraints. Add touch-friendly hover states and increase interactive areas for mobile. Verify lazy loading works efficiently with appropriate loading thresholds for mobile connections."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Ensure ProjectCalculator form is mobile-friendly with responsive inputs, checkboxes, and button sizing",
+      "acceptanceCriteria": [
+        "Form inputs are large enough for easy mobile interaction",
+        "Checkboxes have sufficient touch target size (minimum 44x44px)",
+        "Calculate button is easily tappable on mobile devices",
+        "Results display clearly on small screens"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ProjectCalculator.tsx",
+          "operation": "modify",
+          "description": "Increase touch target sizes for all checkboxes to minimum 44x44px with proper spacing. Make form inputs and buttons larger on mobile with responsive padding. Ensure results section has readable typography on small screens. Stack form elements vertically with appropriate gaps on mobile, optimize layout for tablet and desktop."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Make ContactSection form and contact info cards responsive with proper mobile layout",
+      "acceptanceCriteria": [
+        "Contact form inputs are mobile-friendly with proper sizing",
+        "Contact info cards stack vertically on mobile",
+        "Phone number link (tel:7678643475) is tappable on mobile devices",
+        "Form submission works smoothly on touch devices"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ContactSection.tsx",
+          "operation": "modify",
+          "description": "Implement responsive layout with form and info cards stacking on mobile. Increase input field heights and padding for better mobile usability. Ensure phone link (tel:7678643475) has sufficient touch target size. Make submit button full-width on mobile with proper height. Adjust grid layout for contact info cards: grid-cols-1 on mobile, md:grid-cols-3 on desktop."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Optimize TechnologyStack grid and animated connections for mobile devices with reduced animation complexity if needed for performance",
+      "acceptanceCriteria": [
+        "Technology cards display in responsive grid (1 column mobile, 2 columns tablet, 3 columns desktop)",
+        "Animated connections render without performance issues on mobile",
+        "Text and icons remain readable at all screen sizes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/TechnologyStack.tsx",
+          "operation": "modify",
+          "description": "Update grid layout to be fully responsive: grid-cols-1 on mobile, sm:grid-cols-2 on tablet, lg:grid-cols-3 on desktop. Ensure card content and icons scale appropriately. Adjust spacing and padding for optimal mobile viewing."
+        },
+        {
+          "path": "frontend/src/components/AnimatedConnections.tsx",
+          "operation": "modify",
+          "description": "Implement performance optimization for mobile devices by detecting viewport size and reducing animation complexity (fewer connection lines, reduced update frequency) on screens under 768px. Ensure canvas resizes properly on orientation changes. Consider using requestAnimationFrame throttling on mobile to improve battery efficiency."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Ensure WhatsAppButton remains accessible and properly positioned on mobile devices with appropriate sizing for thumb interaction",
+      "acceptanceCriteria": [
+        "WhatsApp button is easily tappable (minimum 48x48px touch target)",
+        "Button positioning doesn't overlap important content on mobile",
+        "Button animation doesn't cause performance issues on mobile devices"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/WhatsAppButton.tsx",
+          "operation": "modify",
+          "description": "Ensure button meets minimum 48x48px touch target size for mobile. Adjust bottom and right positioning on mobile to prevent overlap with content while remaining accessible. Optimize pulse animation to reduce CPU usage on mobile devices. Consider reducing animation complexity or frequency on mobile for better battery efficiency."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Verify AboutFounder section displays responsively with proper image and text layout on mobile and desktop",
+      "acceptanceCriteria": [
+        "Founder profile photo scales appropriately on mobile",
+        "Bio text is readable with proper line length on all screen sizes",
+        "Quote section maintains visual hierarchy on mobile"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/AboutFounder.tsx",
           "operation": "modify",
-          "description": "Verify that the image src path correctly references /assets/generated/founder-nitesh.dim_400x400.png (using the public directory convention) and that the image alt attribute appropriately describes the founder photo. Ensure no hardcoded placeholder paths remain."
+          "description": "Implement responsive layout with image and text stacking vertically on mobile, side-by-side on desktop. Scale profile photo appropriately using the generated asset at frontend/public/assets/generated/founder-nitesh.dim_400x400.png. Ensure text has optimal line length on all screens with responsive font sizing. Adjust padding and spacing for mobile-first approach."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Test and optimize all canvas-based animations for mobile performance and battery efficiency",
+      "acceptanceCriteria": [
+        "Canvas animations run smoothly on mobile devices (minimum 30 FPS)",
+        "Animations pause or reduce complexity when battery is low",
+        "No excessive CPU usage causing device heating on mobile"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ParticleField.tsx",
+          "operation": "modify",
+          "description": "Implement mobile-specific optimizations: reduce particle count on screens under 768px, implement frame rate throttling for mobile devices, add battery-aware performance scaling if Battery API is available. Ensure canvas resizes efficiently on orientation changes without causing jank."
+        },
+        {
+          "path": "frontend/src/components/AnimatedBackground.tsx",
+          "operation": "modify",
+          "description": "Optimize animation loop for mobile by reducing line complexity and update frequency on smaller viewports. Implement efficient canvas clearing and redrawing strategies. Add performance monitoring to detect and respond to low frame rates by further reducing animation complexity."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add viewport-based performance management that detects mobile devices and passes performance hints to child components. Implement global animation quality settings that can be adjusted based on device capabilities. Ensure all canvas-based components receive appropriate performance constraints."
         }
       ]
     }

@@ -42,19 +42,19 @@ const ServicesSection = () => {
     <section
       id="services"
       ref={ref}
-      className={`py-20 px-4 transition-all duration-1000 ${
+      className={`py-12 sm:py-16 md:py-20 px-4 sm:px-6 transition-all duration-1000 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}
     >
       <div className="container mx-auto max-w-7xl">
-        <h2 className="text-3xl md:text-5xl font-bold text-center mb-4 gradient-text">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-3 sm:mb-4 gradient-text">
           Our Services
         </h2>
-        <p className="text-center text-foreground/70 mb-16 text-lg">
+        <p className="text-center text-foreground/70 mb-10 sm:mb-12 md:mb-16 text-base sm:text-lg px-4">
           Cutting-edge solutions powered by artificial intelligence
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {services.map((service, index) => (
             <ServiceCard
               key={index}

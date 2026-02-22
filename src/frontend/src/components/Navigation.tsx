@@ -40,22 +40,22 @@ const Navigation = () => {
           : 'bg-transparent'
       }`}
     >
-      <nav className="container mx-auto px-4 py-4">
+      <nav className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-blue to-electric-purple flex items-center justify-center shadow-glow">
-              <span className="text-xl font-bold text-white">YT</span>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-neon-blue to-electric-purple flex items-center justify-center shadow-glow">
+              <span className="text-lg sm:text-xl font-bold text-white">YT</span>
             </div>
-            <span className="text-xl font-bold gradient-text">Yadav Tech</span>
+            <span className="text-lg sm:text-xl font-bold gradient-text">Yadav Tech</span>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {navLinks.map((link) => (
               <button
                 key={link.name}
                 onClick={() => scrollToSection(link.href)}
-                className="text-sm font-medium text-foreground/80 hover:text-neon-blue transition-colors duration-200"
+                className="text-sm font-medium text-foreground/80 hover:text-neon-blue transition-colors duration-200 min-h-[44px] flex items-center"
               >
                 {link.name}
               </button>
@@ -71,7 +71,8 @@ const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg glass-panel"
+            className="lg:hidden p-3 rounded-lg glass-panel min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Toggle menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -79,19 +80,19 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden mt-4 glass-panel rounded-lg p-4 space-y-3">
+          <div className="lg:hidden mt-4 glass-panel rounded-lg p-4 space-y-2 animate-fade-in">
             {navLinks.map((link) => (
               <button
                 key={link.name}
                 onClick={() => scrollToSection(link.href)}
-                className="block w-full text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-neon-blue hover:bg-neon-blue/10 rounded-lg transition-all duration-200"
+                className="block w-full text-left px-4 py-3 text-base font-medium text-foreground/80 hover:text-neon-blue hover:bg-neon-blue/10 rounded-lg transition-all duration-200 min-h-[44px]"
               >
                 {link.name}
               </button>
             ))}
             <Button
               onClick={() => scrollToSection('#contact')}
-              className="w-full bg-gradient-to-r from-neon-blue to-electric-purple hover:shadow-glow-lg transition-all duration-300"
+              className="w-full bg-gradient-to-r from-neon-blue to-electric-purple hover:shadow-glow-lg transition-all duration-300 mt-2 min-h-[44px]"
             >
               Get Started
             </Button>

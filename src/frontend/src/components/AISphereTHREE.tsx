@@ -1,9 +1,9 @@
-import { useRef, Suspense } from 'react';
+import { useRef, Suspense, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Sphere, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-const AnimatedSphere = () => {
+const AnimatedSphere = ({ isMobile }: { isMobile: boolean }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const particlesRef = useRef<THREE.Points>(null);
 
@@ -17,8 +17,8 @@ const AnimatedSphere = () => {
     }
   });
 
-  // Create particles
-  const particlesCount = 1000;
+  // Reduce particle count on mobile for better performance
+  const particlesCount = isMobile ? 500 : 1000;
   const positions = new Float32Array(particlesCount * 3);
   for (let i = 0; i < particlesCount * 3; i++) {
     positions[i] = (Math.random() - 0.5) * 10;
@@ -26,12 +26,12 @@ const AnimatedSphere = () => {
 
   return (
     <>
-      <Sphere ref={meshRef} args={[1, 64, 64]} scale={2.5}>
+      <Sphere ref={meshRef} args={[1, isMobile ? 32 : 64, isMobile ? 32 : 64]} scale={isMobile ? 2 : 2.5}>
         <MeshDistortMaterial
           color="#00d4ff"
           attach="material"
           distort={0.4}
-          speed={2}
+          speed={isMobile ? 1.5 : 2}
           roughness={0.2}
           metalness={0.8}
           emissive="#00d4ff"
@@ -49,7 +49,7 @@ const AnimatedSphere = () => {
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.02}
+          size={isMobile ? 0.015 : 0.02}
           color="#b429ff"
           transparent
           opacity={0.6}
@@ -65,6 +65,19 @@ const AnimatedSphere = () => {
 };
 
 const AISphereTHREE = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div className="w-full h-full">
       <Suspense fallback={
@@ -72,12 +85,15 @@ const AISphereTHREE = () => {
           <img
             src="/assets/generated/ai-sphere.dim_600x600.png"
             alt="AI Sphere"
-            className="w-64 h-64 object-contain animate-pulse"
+            className="w-48 h-48 sm:w-64 sm:h-64 object-contain animate-pulse"
           />
         </div>
       }>
-        <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-          <AnimatedSphere />
+        <Canvas 
+          camera={{ position: [0, 0, 5], fov: 75 }}
+          gl={{ antialias: !isMobile, powerPreference: isMobile ? 'low-power' : 'high-performance' }}
+        >
+          <AnimatedSphere isMobile={isMobile} />
         </Canvas>
       </Suspense>
     </div>

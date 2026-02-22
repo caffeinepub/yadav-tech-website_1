@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navigation from './components/Navigation';
 import HeroSection from './components/HeroSection';
 import AboutFounder from './components/AboutFounder';
@@ -16,9 +16,21 @@ import ParticleField from './components/ParticleField';
 import Footer from './components/Footer';
 
 function App() {
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     // Smooth scroll behavior
     document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Detect mobile device for performance optimizations
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   return (

@@ -1,123 +1,98 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 5,
-  "summary": "Futuristic AI-powered technology company website for Yadav Tech with Tesla-style minimalism, Apple-style premium layout, dark neon blue cyber theme, glassmorphism, 3D floating elements, and smooth animations",
+  "projectStateVersion": 3,
+  "summary": "Website project with responsive design for mobile and PC",
   "architectural_notes": [
-    "Single-page application with dark mode default",
-    "Design system: Deep Space Black, Neon Blue, Electric Purple Glow color scheme",
-    "UI components: Floating cards, blurred glass panels, gradient borders, glassmorphism",
-    "Animations: AI grid background, particle effects, scroll-triggered animations, smooth motion",
-    "Typography: Modern futuristic font style",
-    "Responsive design with mobile-first approach",
-    "Production-ready HTML + CSS + JS stack",
-    "SEO and performance optimized",
-    "WhatsApp integration for floating chat button"
+    "Responsive design required for mobile and desktop viewports"
   ],
   "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Professional portrait photo of Nitesh Kumar Yadav wearing a Calvin Klein hoodie, centered composition with clean background (founder-nitesh.dim_400x400.png)",
   "existing_features": [
     {
-      "id": "feature-create-hero-section-with-heading-ai-powered-websites-apps-built-for-the-future-subtext-from-intelligent-automation-to-scalable-digital-platforms-yadav-tech-builds-next-generation-solutions-three-cta-buttons-start-your-ai-project-schedule-consultation-chat-on-whatsapp-and-an-animated-glowing-ai-sphere-or-digital-brain-visual",
-      "title": "Create hero section with heading 'AI-Powered Websites & Apps Built for the Future', subtext 'From intelligent automation to scalable digital platforms, Yadav Tech builds next-generation solutions.', three CTA buttons ('Start Your AI Project', 'Schedule Consultation', 'Chat on WhatsApp'), and an animated glowing AI sphere or digital brain visual",
+      "id": "feature-update-navigation-component-to-ensure-mobile-menu-is-fully-functional-with-proper-touch-interactions-and-responsive-breakpoints",
+      "title": "Update Navigation component to ensure mobile menu is fully functional with proper touch interactions and responsive breakpoints",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-about-founder-section-titled-meet-the-visionary-featuring-nitesh-kumar-yadav-as-founder-ceo-description-a-young-technology-entrepreneur-focused-on-building-ai-driven-digital-platforms-that-empower-businesses-founder-image-placeholder-signature-style-layout-and-quote-i-don-t-just-build-software-i-build-intelligent-digital-assets-that-create-long-term-business-value-nitesh-kumar-yadav",
-      "title": "Create About Founder section titled 'Meet The Visionary' featuring Nitesh Kumar Yadav as Founder & CEO, description 'A young technology entrepreneur focused on building AI-driven digital platforms that empower businesses.', founder image placeholder, signature style layout, and quote: 'I don't just build software. I build intelligent digital assets that create long-term business value.' – Nitesh Kumar Yadav",
+      "id": "feature-optimize-herosection-for-mobile-devices-with-responsive-text-sizing-button-layout-and-3d-sphere-performance",
+      "title": "Optimize HeroSection for mobile devices with responsive text sizing, button layout, and 3D sphere performance",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-services-section-with-6-animated-3d-futuristic-cards-that-glow-on-hover-1-ai-website-development-smart-chatbots-recommendation-engines-automation-systems-2-android-app-development-high-performance-scalable-mobile-apps-3-ios-app-development-premium-apple-grade-applications-4-ai-saas-platforms-subscription-based-intelligent-platforms-5-business-automation-systems-ai-dashboards-analytics-6-e-commerce-with-ai-smart-product-suggestions-automation",
-      "title": "Create Services section with 6 animated 3D futuristic cards that glow on hover: 1) AI Website Development (Smart chatbots, recommendation engines, automation systems), 2) Android App Development (High-performance scalable mobile apps), 3) iOS App Development (Premium Apple-grade applications), 4) AI SaaS Platforms (Subscription-based intelligent platforms), 5) Business Automation Systems (AI dashboards + analytics), 6) E-Commerce with AI (Smart product suggestions + automation)",
+      "id": "feature-ensure-servicessection-grid-adapts-responsively-from-single-column-on-mobile-to-multi-column-layout-on-tablet-and-desktop",
+      "title": "Ensure ServicesSection grid adapts responsively from single column on mobile to multi-column layout on tablet and desktop",
       "reqIds": [
         "REQ-3"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-ai-technology-stack-section-displaying-futuristic-tech-grid-with-6-technologies-machine-learning-openai-api-integration-chatgpt-integration-ai-recommendation-engine-real-time-analytics-dashboard-cloud-deployment-architecture-add-animated-connection-lines-between-technologies",
-      "title": "Create AI Technology Stack section displaying futuristic tech grid with 6 technologies: Machine Learning, OpenAI API Integration, ChatGPT Integration, AI Recommendation Engine, Real-Time Analytics Dashboard, Cloud Deployment Architecture. Add animated connection lines between technologies",
+      "id": "feature-make-pricingsection-pricing-cards-responsive-with-proper-stacking-on-mobile-and-grid-layout-on-desktop",
+      "title": "Make PricingSection pricing cards responsive with proper stacking on mobile and grid layout on desktop",
       "reqIds": [
         "REQ-4"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-product-showcase-section-with-5-animated-device-mockups-ai-trading-dashboard-ui-ai-chatbot-system-saas-admin-panel-mobile-app-preview-ai-automation-flow",
-      "title": "Create Product Showcase section with 5 animated device mockups: AI Trading Dashboard UI, AI Chatbot System, SaaS Admin Panel, Mobile App Preview, AI Automation Flow",
+      "id": "feature-optimize-productshowcase-mockup-cards-for-mobile-viewing-with-appropriate-image-sizing-and-touch-interactions",
+      "title": "Optimize ProductShowcase mockup cards for mobile viewing with appropriate image sizing and touch interactions",
       "reqIds": [
         "REQ-5"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-pricing-section-with-4-tiers-starter-website-9-999-business-pro-24-999-ai-powered-website-39-999-mobile-app-ai-79-999-add-glowing-most-popular-badge-to-appropriate-tier",
-      "title": "Create Pricing section with 4 tiers: Starter Website (₹9,999), Business Pro (₹24,999), AI Powered Website (₹39,999), Mobile App + AI (₹79,999+). Add glowing 'Most Popular' badge to appropriate tier",
+      "id": "feature-ensure-projectcalculator-form-is-mobile-friendly-with-responsive-inputs-checkboxes-and-button-sizing",
+      "title": "Ensure ProjectCalculator form is mobile-friendly with responsive inputs, checkboxes, and button sizing",
       "reqIds": [
         "REQ-6"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-why-yadav-tech-section-with-6-benefit-points-ai-first-architecture-scalable-cloud-systems-startup-level-innovation-enterprise-grade-security-1-year-free-technical-support-deployment-maintenance",
-      "title": "Create Why Yadav Tech section with 6 benefit points: AI-First Architecture, Scalable Cloud Systems, Startup-Level Innovation, Enterprise-Grade Security, 1 Year Free Technical Support, Deployment + Maintenance",
+      "id": "feature-make-contactsection-form-and-contact-info-cards-responsive-with-proper-mobile-layout",
+      "title": "Make ContactSection form and contact info cards responsive with proper mobile layout",
       "reqIds": [
         "REQ-7"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-global-vision-section-with-headline-building-india-s-next-ai-tech-brand-and-content-yadav-tech-aims-to-become-a-global-ai-solutions-provider-delivering-intelligent-platforms-worldwide",
-      "title": "Create Global Vision section with headline 'Building India's Next AI Tech Brand' and content: 'Yadav Tech aims to become a global AI solutions provider delivering intelligent platforms worldwide.'",
+      "id": "feature-optimize-technologystack-grid-and-animated-connections-for-mobile-devices-with-reduced-animation-complexity-if-needed-for-performance",
+      "title": "Optimize TechnologyStack grid and animated connections for mobile devices with reduced animation complexity if needed for performance",
       "reqIds": [
         "REQ-8"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-contact-section-with-smart-contact-form-fields-for-name-email-phone-message-whatsapp-floating-button-email-contact-phone-contact-and-location-india-add-futuristic-glowing-submit-button",
-      "title": "Create Contact section with smart contact form (fields for name, email, phone, message), WhatsApp floating button, email contact, phone contact, and location 'India'. Add futuristic glowing submit button",
+      "id": "feature-ensure-whatsappbutton-remains-accessible-and-properly-positioned-on-mobile-devices-with-appropriate-sizing-for-thumb-interaction",
+      "title": "Ensure WhatsAppButton remains accessible and properly positioned on mobile devices with appropriate sizing for thumb interaction",
       "reqIds": [
         "REQ-9"
       ],
       "version": 1
     },
     {
-      "id": "feature-create-ai-project-calculator-feature-that-estimates-cost-automatically-based-on-selected-features-allow-clients-to-select-project-features-website-type-mobile-app-ai-integration-e-commerce-automation-and-display-calculated-estimate",
-      "title": "Create AI Project Calculator feature that estimates cost automatically based on selected features. Allow clients to select project features (website type, mobile app, AI integration, e-commerce, automation) and display calculated estimate",
+      "id": "feature-verify-aboutfounder-section-displays-responsively-with-proper-image-and-text-layout-on-mobile-and-desktop",
+      "title": "Verify AboutFounder section displays responsively with proper image and text layout on mobile and desktop",
       "reqIds": [
         "REQ-10"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-comprehensive-design-system-with-deep-space-black-background-neon-blue-and-electric-purple-glow-accents-floating-cards-blurred-glass-panels-glassmorphism-gradient-borders-ai-grid-background-animation-subtle-particle-effects-scroll-triggered-animations-and-modern-futuristic-typography-throughout-the-entire-website",
-      "title": "Implement comprehensive design system with deep space black background, neon blue and electric purple glow accents, floating cards, blurred glass panels (glassmorphism), gradient borders, AI grid background animation, subtle particle effects, scroll-triggered animations, and modern futuristic typography throughout the entire website",
+      "id": "feature-test-and-optimize-all-canvas-based-animations-particlefield-animatedbackground-animatedconnections-for-mobile-performance-and-battery-efficiency",
+      "title": "Test and optimize all canvas-based animations (ParticleField, AnimatedBackground, AnimatedConnections) for mobile performance and battery efficiency",
       "reqIds": [
         "REQ-11"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-display-brand-message-prominently-with-tagline-engineering-the-future-with-artificial-intelligence-and-subheadline-we-build-intelligent-websites-mobile-applications-and-ai-powered-digital-ecosystems-that-transform-businesses-into-scalable-tech-brands",
-      "title": "Display brand message prominently with tagline 'Engineering the Future with Artificial Intelligence' and subheadline 'We build intelligent websites, mobile applications, and AI-powered digital ecosystems that transform businesses into scalable tech brands.'",
-      "reqIds": [
-        "REQ-12"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-ensure-website-is-fully-responsive-across-desktop-tablet-and-mobile-devices-with-optimized-layouts-for-each-breakpoint",
-      "title": "Ensure website is fully responsive across desktop, tablet, and mobile devices with optimized layouts for each breakpoint",
-      "reqIds": [
-        "REQ-13"
       ],
       "version": 1
     }
@@ -125,83 +100,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Hero section with animated glowing AI sphere, heading, subtext, and CTA buttons",
+      "summary": "Make website responsive for both mobile and PC",
       "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "About Founder section with image placeholder, signature layout, and quote",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Services section with 6 animated 3D futuristic cards (hover glow effects)",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "AI Technology Stack section with futuristic tech grid and animated connection lines",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-5",
-      "summary": "Product Showcase section with 5 animated device mockups",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-6",
-      "summary": "Pricing section with 4 tiers and glowing 'Most Popular' badge",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-7",
-      "summary": "Why Yadav Tech section with 6 benefit points",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-8",
-      "summary": "Global Vision section with headline and content about AI brand goals",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-9",
-      "summary": "Contact section with smart form, WhatsApp floating button, and contact details",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-10",
-      "summary": "AI Project Calculator feature for automatic cost estimation based on selected features",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-11",
-      "summary": "Replace the founder profile image in the About Founder section (located at XPath /html[1]/body[1]/div[1]/div[1]/div[2]/main[1]/section[2]/div[1]/div[1]/div[1]/div[1]/img[1]) with the uploaded founder photo",
-      "reqIds": [
-        "REQ-14"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-12",
-      "summary": "Ensure the new founder photo is stored as a static asset in frontend/public/assets/generated and referenced correctly in the AboutFounder component",
-      "reqIds": [
-        "REQ-15"
-      ],
       "status": "pending"
     }
   ],
-  "gameProjectType": "none",
-  "projectName": "Yadav Tech Website",
+  "projectName": "Make website fully responsive for mobile and desktop",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

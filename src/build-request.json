@@ -1,56 +1,225 @@
 {
   "kind": "build_request",
-  "title": "Replace founder section placeholder image with uploaded photo",
-  "projectName": "Yadav Tech",
+  "title": "Make website fully responsive for mobile and desktop",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-14",
-      "text": "Replace the founder profile image in the About Founder section (located at XPath /html[1]/body[1]/div[1]/div[1]/div[2]/main[1]/section[2]/div[1]/div[1]/div[1]/div[1]/img[1]) with the uploaded founder photo",
+      "id": "REQ-1",
+      "text": "Update Navigation component to ensure mobile menu is fully functional with proper touch interactions and responsive breakpoints",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-user-mobile"
         ],
         "quotes": [
-          "Add this picture"
+          "Also make this website for mobile as well as pc"
         ]
       },
       "acceptanceCriteria": [
-        "The founder image element at the specified XPath displays the uploaded photo of Nitesh Kumar Yadav",
-        "The image maintains proper aspect ratio and fits within the existing glassmorphism card design",
-        "The image loads correctly and displays on all device breakpoints (desktop, tablet, mobile)"
+        "Mobile navigation menu opens and closes smoothly on touch devices",
+        "Navigation links work correctly on mobile screens",
+        "Menu adapts properly at tablet and desktop breakpoints"
       ]
     },
     {
-      "id": "REQ-15",
-      "text": "Ensure the new founder photo is stored as a static asset in frontend/public/assets/generated and referenced correctly in the AboutFounder component",
+      "id": "REQ-2",
+      "text": "Optimize HeroSection for mobile devices with responsive text sizing, button layout, and 3D sphere performance",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
         ]
       },
       "acceptanceCriteria": [
-        "The founder photo is saved to frontend/public/assets/generated directory",
-        "The AboutFounder component references the correct asset path",
-        "No console errors or broken image links appear when the page loads"
+        "Hero text scales appropriately on small screens (320px+)",
+        "CTA buttons stack vertically on mobile with proper spacing",
+        "3D AI sphere renders efficiently on mobile devices without performance issues"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Ensure ServicesSection grid adapts responsively from single column on mobile to multi-column layout on tablet and desktop",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Service cards display in single column on mobile (< 640px)",
+        "Cards arrange in 2 columns on tablets (640px - 1024px)",
+        "Cards display in 3 columns on desktop (> 1024px)"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Make PricingSection pricing cards responsive with proper stacking on mobile and grid layout on desktop",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Pricing cards stack vertically on mobile screens",
+        "Cards arrange in 2x2 grid on tablets",
+        "Cards display in horizontal row on large desktop screens",
+        "Text and pricing remain readable at all screen sizes"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Optimize ProductShowcase mockup cards for mobile viewing with appropriate image sizing and touch interactions",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Mockup images scale properly on mobile without overflow",
+        "Cards are touch-friendly with appropriate spacing",
+        "Lazy loading works efficiently on mobile connections"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Ensure ProjectCalculator form is mobile-friendly with responsive inputs, checkboxes, and button sizing",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Form inputs are large enough for easy mobile interaction",
+        "Checkboxes have sufficient touch target size (minimum 44x44px)",
+        "Calculate button is easily tappable on mobile devices",
+        "Results display clearly on small screens"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Make ContactSection form and contact info cards responsive with proper mobile layout",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Contact form inputs are mobile-friendly with proper sizing",
+        "Contact info cards stack vertically on mobile",
+        "Phone number link (tel:7678643475) is tappable on mobile devices",
+        "Form submission works smoothly on touch devices"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Optimize TechnologyStack grid and animated connections for mobile devices with reduced animation complexity if needed for performance",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Technology cards display in responsive grid (1 column mobile, 2 columns tablet, 3 columns desktop)",
+        "Animated connections render without performance issues on mobile",
+        "Text and icons remain readable at all screen sizes"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Ensure WhatsAppButton remains accessible and properly positioned on mobile devices with appropriate sizing for thumb interaction",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "WhatsApp button is easily tappable (minimum 48x48px touch target)",
+        "Button positioning doesn't overlap important content on mobile",
+        "Button animation doesn't cause performance issues on mobile devices"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Verify AboutFounder section displays responsively with proper image and text layout on mobile and desktop",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Founder profile photo scales appropriately on mobile",
+        "Bio text is readable with proper line length on all screen sizes",
+        "Quote section maintains visual hierarchy on mobile"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Test and optimize all canvas-based animations (ParticleField, AnimatedBackground, AnimatedConnections) for mobile performance and battery efficiency",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-mobile"
+        ],
+        "quotes": [
+          "Also make this website for mobile as well as pc"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Canvas animations run smoothly on mobile devices (minimum 30 FPS)",
+        "Animations pause or reduce complexity when battery is low",
+        "No excessive CPU usage causing device heating on mobile"
       ]
     }
   ],
   "constraints": [
-    "Do not modify the AboutFounder component structure or layout beyond updating the image source",
-    "Preserve existing glassmorphism styling, scroll animations, and responsive design"
+    "Maintain existing glassmorphism and space-themed design aesthetic across all screen sizes",
+    "Preserve all existing functionality including WhatsApp phone number 7678643475 and contact tel: link",
+    "Do not modify backend/main.mo or any backend logic",
+    "Do not alter immutable frontend paths: useInternetIdentity, useActor, main.tsx, and components/ui"
   ],
   "nonGoals": [
-    "Changing any other images on the website",
-    "Modifying the founder's name, title, bio text, or quote",
-    "Altering the section layout or card design"
+    "Creating native mobile apps",
+    "Adding progressive web app (PWA) features",
+    "Implementing mobile-specific features beyond responsive design",
+    "Changing the visual design or color scheme",
+    "Modifying the backend API or data structures"
   ],
   "imageRequirements": {
-    "required": [
-      "Professional portrait photo of Nitesh Kumar Yadav wearing a Calvin Klein hoodie, centered composition with clean background (founder-nitesh.dim_400x400.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }

@@ -5,7 +5,7 @@ import BrandMessage from './BrandMessage';
 
 const HeroSection = () => {
   const handleWhatsApp = () => {
-    window.open('https://wa.me/', '_blank');
+    window.open('https://wa.me/7678643475', '_blank');
   };
 
   const scrollToContact = () => {
@@ -13,13 +13,13 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center pt-20 px-4 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center pt-20 sm:pt-24 px-4 sm:px-6 overflow-hidden">
       <div className="container mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 animate-fade-in">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="space-y-6 sm:space-y-8 animate-fade-in">
             <BrandMessage />
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
               <span className="gradient-text">AI-Powered</span>
               <br />
               Websites & Apps
@@ -27,15 +27,15 @@ const HeroSection = () => {
               <span className="text-neon-blue">Built for the Future</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-foreground/70 max-w-2xl">
+            <p className="text-base sm:text-lg md:text-xl text-foreground/70 max-w-2xl">
               From intelligent automation to scalable digital platforms, Yadav Tech builds next-generation solutions.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Button
                 size="lg"
                 onClick={scrollToContact}
-                className="bg-gradient-to-r from-neon-blue to-electric-purple hover:shadow-glow-lg transition-all duration-300 group"
+                className="bg-gradient-to-r from-neon-blue to-electric-purple hover:shadow-glow-lg transition-all duration-300 group w-full sm:w-auto min-h-[48px] text-base"
               >
                 Start Your AI Project
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -45,7 +45,7 @@ const HeroSection = () => {
                 size="lg"
                 variant="outline"
                 onClick={scrollToContact}
-                className="border-neon-blue/50 hover:bg-neon-blue/10 hover:border-neon-blue transition-all duration-300"
+                className="border-neon-blue/50 hover:bg-neon-blue/10 hover:border-neon-blue transition-all duration-300 w-full sm:w-auto min-h-[48px] text-base"
               >
                 <Calendar className="mr-2 w-5 h-5" />
                 Schedule Consultation
@@ -55,7 +55,7 @@ const HeroSection = () => {
                 size="lg"
                 variant="outline"
                 onClick={handleWhatsApp}
-                className="border-electric-purple/50 hover:bg-electric-purple/10 hover:border-electric-purple transition-all duration-300"
+                className="border-electric-purple/50 hover:bg-electric-purple/10 hover:border-electric-purple transition-all duration-300 w-full sm:w-auto min-h-[48px] text-base"
               >
                 <MessageCircle className="mr-2 w-5 h-5" />
                 Chat on WhatsApp
@@ -63,7 +63,7 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <div className="relative h-[400px] md:h-[600px] flex items-center justify-center">
+          <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center">
             <AISphereTHREE />
           </div>
         </div>
