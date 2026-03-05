@@ -1,0 +1,127 @@
+{
+  "kind": "build_request",
+  "title": "Prepare application for production deployment",
+  "projectName": "Yadav Tech Portfolio",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Update the h2 heading element at XPath /html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/h2[1] to reflect production-ready copy suitable for a live website",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Now we have to go live"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The h2 heading text is updated to professional, customer-facing copy",
+        "The text is appropriate for a live production environment"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Update the container div element at XPath /html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1] to ensure styling is production-ready and polished",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Now we have to go live"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Container styling is consistent with the overall design system",
+        "Visual appearance is polished for production use"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Update the form label element at XPath /html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1]/div[1]/label[1] to use production-appropriate label text",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Now we have to go live"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Label text is clear and professional",
+        "Label follows accessibility best practices"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Update the form label element at XPath /html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1]/div[2]/label[1] to use production-appropriate label text",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Now we have to go live"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Label text is clear and professional",
+        "Label follows accessibility best practices"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Review and update the form element at XPath /html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1] to ensure all form attributes, validation, and submission behavior are production-ready",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Now we have to go live"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Form submission works correctly in production environment",
+        "Form validation provides appropriate user feedback",
+        "Form handling is secure and follows best practices"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Update the input element at XPath /html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1]/div[2]/input[1] to ensure placeholder text, attributes, and styling are appropriate for production",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "Now we have to go live"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Input placeholder text is professional and helpful",
+        "Input validation and error states work correctly",
+        "Input styling is consistent with production design"
+      ]
+    }
+  ],
+  "constraints": [
+    "Only modify the 6 specific elements identified by their XPath expressions",
+    "Do not modify any immutable frontend paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui",
+    "Maintain the existing React, Tailwind, and Shadcn stack"
+  ],
+  "nonGoals": [
+    "Changing backend functionality or API endpoints",
+    "Modifying elements outside the 6 selected XPath locations",
+    "Adding new features or components",
+    "Changing the overall page structure or navigation"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
