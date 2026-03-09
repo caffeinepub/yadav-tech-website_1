@@ -10,32 +10,15 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
-export interface Estimate {
-  'projectType' : ProjectType,
-  'estimatedCost' : bigint,
-}
-export type ProjectId = bigint;
-export interface ProjectType {
-  'aiIntegration' : boolean,
-  'website' : boolean,
-  'automation' : boolean,
-  'mobileApp' : boolean,
-  'ecommerce' : boolean,
+export interface Message {
+  'id' : bigint,
+  'text' : string,
+  'author' : string,
+  'timestamp' : bigint,
 }
 export interface _SERVICE {
-  'createProjectType' : ActorMethod<
-    [boolean, boolean, boolean, boolean, boolean],
-    bigint
-  >,
-  'estimateProject' : ActorMethod<[ProjectType], bigint>,
-  'getAllEstimates' : ActorMethod<[], Array<Estimate>>,
-  'getAllProjectTypes' : ActorMethod<[], Array<ProjectType>>,
-  'getEstimate' : ActorMethod<[ProjectId], Estimate>,
-  'getProjectType' : ActorMethod<[ProjectId], ProjectType>,
-  'updateProjectType' : ActorMethod<
-    [ProjectId, boolean, boolean, boolean, boolean, boolean],
-    boolean
-  >,
+  'getConversation' : ActorMethod<[], Array<Message>>,
+  'sendUserMessage' : ActorMethod<[string], Message>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

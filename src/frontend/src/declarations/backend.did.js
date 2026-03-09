@@ -8,69 +8,31 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const ProjectType = IDL.Record({
-  'aiIntegration' : IDL.Bool,
-  'website' : IDL.Bool,
-  'automation' : IDL.Bool,
-  'mobileApp' : IDL.Bool,
-  'ecommerce' : IDL.Bool,
+export const Message = IDL.Record({
+  'id' : IDL.Nat,
+  'text' : IDL.Text,
+  'author' : IDL.Text,
+  'timestamp' : IDL.Int,
 });
-export const Estimate = IDL.Record({
-  'projectType' : ProjectType,
-  'estimatedCost' : IDL.Nat,
-});
-export const ProjectId = IDL.Nat;
 
 export const idlService = IDL.Service({
-  'createProjectType' : IDL.Func(
-      [IDL.Bool, IDL.Bool, IDL.Bool, IDL.Bool, IDL.Bool],
-      [IDL.Nat],
-      [],
-    ),
-  'estimateProject' : IDL.Func([ProjectType], [IDL.Nat], []),
-  'getAllEstimates' : IDL.Func([], [IDL.Vec(Estimate)], ['query']),
-  'getAllProjectTypes' : IDL.Func([], [IDL.Vec(ProjectType)], ['query']),
-  'getEstimate' : IDL.Func([ProjectId], [Estimate], ['query']),
-  'getProjectType' : IDL.Func([ProjectId], [ProjectType], ['query']),
-  'updateProjectType' : IDL.Func(
-      [ProjectId, IDL.Bool, IDL.Bool, IDL.Bool, IDL.Bool, IDL.Bool],
-      [IDL.Bool],
-      [],
-    ),
+  'getConversation' : IDL.Func([], [IDL.Vec(Message)], ['query']),
+  'sendUserMessage' : IDL.Func([IDL.Text], [Message], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
-  const ProjectType = IDL.Record({
-    'aiIntegration' : IDL.Bool,
-    'website' : IDL.Bool,
-    'automation' : IDL.Bool,
-    'mobileApp' : IDL.Bool,
-    'ecommerce' : IDL.Bool,
+  const Message = IDL.Record({
+    'id' : IDL.Nat,
+    'text' : IDL.Text,
+    'author' : IDL.Text,
+    'timestamp' : IDL.Int,
   });
-  const Estimate = IDL.Record({
-    'projectType' : ProjectType,
-    'estimatedCost' : IDL.Nat,
-  });
-  const ProjectId = IDL.Nat;
   
   return IDL.Service({
-    'createProjectType' : IDL.Func(
-        [IDL.Bool, IDL.Bool, IDL.Bool, IDL.Bool, IDL.Bool],
-        [IDL.Nat],
-        [],
-      ),
-    'estimateProject' : IDL.Func([ProjectType], [IDL.Nat], []),
-    'getAllEstimates' : IDL.Func([], [IDL.Vec(Estimate)], ['query']),
-    'getAllProjectTypes' : IDL.Func([], [IDL.Vec(ProjectType)], ['query']),
-    'getEstimate' : IDL.Func([ProjectId], [Estimate], ['query']),
-    'getProjectType' : IDL.Func([ProjectId], [ProjectType], ['query']),
-    'updateProjectType' : IDL.Func(
-        [ProjectId, IDL.Bool, IDL.Bool, IDL.Bool, IDL.Bool, IDL.Bool],
-        [IDL.Bool],
-        [],
-      ),
+    'getConversation' : IDL.Func([], [IDL.Vec(Message)], ['query']),
+    'sendUserMessage' : IDL.Func([IDL.Text], [Message], []),
   });
 };
 

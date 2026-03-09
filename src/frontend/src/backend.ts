@@ -89,124 +89,43 @@ export class ExternalBlob {
         return this;
     }
 }
-export type ProjectId = bigint;
-export interface ProjectType {
-    aiIntegration: boolean;
-    website: boolean;
-    automation: boolean;
-    mobileApp: boolean;
-    ecommerce: boolean;
-}
-export interface Estimate {
-    projectType: ProjectType;
-    estimatedCost: bigint;
+export interface Message {
+    id: bigint;
+    text: string;
+    author: string;
+    timestamp: bigint;
 }
 export interface backendInterface {
-    createProjectType(website: boolean, mobileApp: boolean, aiIntegration: boolean, ecommerce: boolean, automation: boolean): Promise<bigint>;
-    estimateProject(project: ProjectType): Promise<bigint>;
-    getAllEstimates(): Promise<Array<Estimate>>;
-    getAllProjectTypes(): Promise<Array<ProjectType>>;
-    getEstimate(id: ProjectId): Promise<Estimate>;
-    getProjectType(id: ProjectId): Promise<ProjectType>;
-    updateProjectType(id: ProjectId, website: boolean, mobileApp: boolean, aiIntegration: boolean, ecommerce: boolean, automation: boolean): Promise<boolean>;
+    getConversation(): Promise<Array<Message>>;
+    sendUserMessage(text: string): Promise<Message>;
 }
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
-    async createProjectType(arg0: boolean, arg1: boolean, arg2: boolean, arg3: boolean, arg4: boolean): Promise<bigint> {
+    async getConversation(): Promise<Array<Message>> {
         if (this.processError) {
             try {
-                const result = await this.actor.createProjectType(arg0, arg1, arg2, arg3, arg4);
+                const result = await this.actor.getConversation();
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.createProjectType(arg0, arg1, arg2, arg3, arg4);
+            const result = await this.actor.getConversation();
             return result;
         }
     }
-    async estimateProject(arg0: ProjectType): Promise<bigint> {
+    async sendUserMessage(arg0: string): Promise<Message> {
         if (this.processError) {
             try {
-                const result = await this.actor.estimateProject(arg0);
+                const result = await this.actor.sendUserMessage(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.estimateProject(arg0);
-            return result;
-        }
-    }
-    async getAllEstimates(): Promise<Array<Estimate>> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getAllEstimates();
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getAllEstimates();
-            return result;
-        }
-    }
-    async getAllProjectTypes(): Promise<Array<ProjectType>> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getAllProjectTypes();
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getAllProjectTypes();
-            return result;
-        }
-    }
-    async getEstimate(arg0: ProjectId): Promise<Estimate> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getEstimate(arg0);
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getEstimate(arg0);
-            return result;
-        }
-    }
-    async getProjectType(arg0: ProjectId): Promise<ProjectType> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getProjectType(arg0);
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getProjectType(arg0);
-            return result;
-        }
-    }
-    async updateProjectType(arg0: ProjectId, arg1: boolean, arg2: boolean, arg3: boolean, arg4: boolean, arg5: boolean): Promise<boolean> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.updateProjectType(arg0, arg1, arg2, arg3, arg4, arg5);
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.updateProjectType(arg0, arg1, arg2, arg3, arg4, arg5);
+            const result = await this.actor.sendUserMessage(arg0);
             return result;
         }
     }

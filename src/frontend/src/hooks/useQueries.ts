@@ -1,29 +1,32 @@
-import { useQuery } from '@tanstack/react-query';
-import { useActor } from './useActor';
-import type { ProjectType, Estimate } from '../backend';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { Message } from "../backend";
+import { useActor } from "./useActor";
 
-export function useGetAllProjectTypes() {
+export function useGetConversation() {
   const { actor, isFetching } = useActor();
 
-  return useQuery<ProjectType[]>({
-    queryKey: ['projectTypes'],
+  return useQuery<Message[]>({
+    queryKey: ["conversation"],
     queryFn: async () => {
       if (!actor) return [];
-      return actor.getAllProjectTypes();
+      return actor.getConversation();
     },
     enabled: !!actor && !isFetching,
+    refetchInterval: false,
   });
 }
 
-export function useGetAllEstimates() {
-  const { actor, isFetching } = useActor();
+export function useSendMessage() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
 
-  return useQuery<Estimate[]>({
-    queryKey: ['estimates'],
-    queryFn: async () => {
-      if (!actor) return [];
-      return actor.getAllEstimates();
+  return useMutation({
+    mutationFn: async (text: string) => {
+      if (!actor) throw new Error("Actor not initialized");
+      return actor.sendUserMessage(text);
     },
-    enabled: !!actor && !isFetching,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["conversation"] });
+    },
   });
 }

@@ -2,185 +2,197 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/assets/fonts/PlayfairDisplay-VariableFont_wght.woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/assets/fonts/GeneralSans-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
-    :root {
-        --radius: 0.625rem;
-        --background: 0.145 0 0;
-        --foreground: 0.985 0 0;
-        --card: 0.205 0 0;
-        --card-foreground: 0.985 0 0;
-        --popover: 0.269 0 0;
-        --popover-foreground: 0.985 0 0;
-        --primary: 0.922 0 0;
-        --primary-foreground: 0.205 0 0;
-        --secondary: 0.269 0 0;
-        --secondary-foreground: 0.985 0 0;
-        --muted: 0.269 0 0;
-        --muted-foreground: 0.708 0 0;
-        --accent: 0.371 0 0;
-        --accent-foreground: 0.985 0 0;
-        --destructive: 0.704 0.191 22.216;
-        --destructive-foreground: 0.205 0 0;
-        --border: 1 0 0 / 10%;
-        --input: 1 0 0 / 15%;
-        --ring: 0.556 0 0;
-        --chart-1: 0.488 0.243 264.376;
-        --chart-2: 0.696 0.17 162.48;
-        --chart-3: 0.769 0.188 70.08;
-        --chart-4: 0.627 0.265 303.9;
-        --chart-5: 0.645 0.246 16.439;
-        --sidebar: 0.205 0 0;
-        --sidebar-foreground: 0.985 0 0;
-        --sidebar-primary: 0.488 0.243 264.376;
-        --sidebar-primary-foreground: 0.985 0 0;
-        --sidebar-accent: 0.269 0 0;
-        --sidebar-accent-foreground: 0.985 0 0;
-        --sidebar-border: 1 0 0 / 10%;
-        --sidebar-ring: 0.439 0 0;
-        
-        /* Custom Yadav Tech Colors */
-        --space-black: 0.04 0 0;
-        --neon-blue: 0.65 0.25 220;
-        --electric-purple: 0.55 0.28 300;
-    }
+  :root {
+    --radius: 0.375rem;
 
-    .dark {
-        --background: 0.04 0 0;
-        --foreground: 0.985 0 0;
-        --card: 0.08 0 0;
-        --card-foreground: 0.985 0 0;
-        --popover: 0.08 0 0;
-        --popover-foreground: 0.985 0 0;
-        --primary: 0.65 0.25 220;
-        --primary-foreground: 0.985 0 0;
-        --secondary: 0.15 0 0;
-        --secondary-foreground: 0.985 0 0;
-        --muted: 0.15 0 0;
-        --muted-foreground: 0.708 0 0;
-        --accent: 0.2 0 0;
-        --accent-foreground: 0.985 0 0;
-        --destructive: 0.704 0.191 22.216;
-        --destructive-foreground: 0.985 0 0;
-        --border: 1 0 0 / 10%;
-        --input: 1 0 0 / 15%;
-        --ring: 0.65 0.25 220;
-    }
+    /* Buttermilk & Bourbon — Dark Luxury Palette */
+    --background: 0.12 0.008 45;
+    --foreground: 0.94 0.018 75;
+    --card: 0.16 0.01 45;
+    --card-foreground: 0.94 0.018 75;
+    --popover: 0.18 0.01 45;
+    --popover-foreground: 0.94 0.018 75;
+    --primary: 0.72 0.14 68;
+    --primary-foreground: 0.12 0.008 45;
+    --secondary: 0.2 0.012 45;
+    --secondary-foreground: 0.88 0.015 75;
+    --muted: 0.22 0.012 45;
+    --muted-foreground: 0.6 0.02 65;
+    --accent: 0.25 0.015 45;
+    --accent-foreground: 0.94 0.018 75;
+    --destructive: 0.65 0.2 22;
+    --destructive-foreground: 0.98 0 0;
+    --border: 0.3 0.02 60;
+    --input: 0.2 0.01 45;
+    --ring: 0.72 0.14 68;
+    --chart-1: 0.72 0.14 68;
+    --chart-2: 0.65 0.12 80;
+    --chart-3: 0.55 0.1 55;
+    --chart-4: 0.45 0.08 40;
+    --chart-5: 0.35 0.06 30;
+    --sidebar: 0.14 0.008 45;
+    --sidebar-foreground: 0.94 0.018 75;
+    --sidebar-primary: 0.72 0.14 68;
+    --sidebar-primary-foreground: 0.12 0.008 45;
+    --sidebar-accent: 0.2 0.01 45;
+    --sidebar-accent-foreground: 0.94 0.018 75;
+    --sidebar-border: 0.25 0.015 55;
+    --sidebar-ring: 0.72 0.14 68;
 
-    * {
-        @apply border-border;
-    }
-    
-    body {
-        @apply bg-space-black text-foreground;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    }
+    /* Brand tokens */
+    --gold: 0.72 0.14 68;
+    --gold-light: 0.82 0.12 80;
+    --gold-dim: 0.55 0.1 68;
+    --espresso: 0.12 0.008 45;
+    --espresso-mid: 0.18 0.01 45;
+    --cream: 0.94 0.018 75;
+    --cream-muted: 0.7 0.018 70;
+  }
 
-    html {
-        scroll-behavior: smooth;
-    }
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: oklch(0.12 0.008 45);
+    color: oklch(0.94 0.018 75);
+    font-family: "General Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: "Playfair Display", serif;
+  }
 }
 
 @layer utilities {
-    /* Glassmorphism */
-    .glass-panel {
-        background: rgba(10, 10, 15, 0.6);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-    }
+  .font-display {
+    font-family: "Playfair Display", serif;
+  }
+  .font-body {
+    font-family: "General Sans", sans-serif;
+  }
 
-    /* Gradient Text */
-    .gradient-text {
-        background: linear-gradient(135deg, oklch(var(--neon-blue)) 0%, oklch(var(--electric-purple)) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
+  .text-gold {
+    color: oklch(var(--gold));
+  }
+  .text-gold-light {
+    color: oklch(var(--gold-light));
+  }
+  .text-cream {
+    color: oklch(var(--cream));
+  }
+  .text-cream-muted {
+    color: oklch(var(--cream-muted));
+  }
 
-    /* Glow Effects */
-    .shadow-glow {
-        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-    }
+  .bg-espresso {
+    background-color: oklch(var(--espresso));
+  }
+  .bg-espresso-mid {
+    background-color: oklch(var(--espresso-mid));
+  }
+  .bg-gold {
+    background-color: oklch(var(--gold));
+  }
+  .border-gold {
+    border-color: oklch(var(--gold));
+  }
+  .border-gold-dim {
+    border-color: oklch(var(--gold-dim));
+  }
 
-    .shadow-glow-sm {
-        box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
-    }
+  /* Scroll-reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 {
+    transition-delay: 0.10s;
+  }
+  .reveal-delay-2 {
+    transition-delay: 0.20s;
+  }
+  .reveal-delay-3 {
+    transition-delay: 0.30s;
+  }
+  .reveal-delay-4 {
+    transition-delay: 0.40s;
+  }
 
-    .shadow-glow-lg {
-        box-shadow: 0 0 40px rgba(0, 212, 255, 0.4), 0 0 80px rgba(180, 41, 255, 0.2);
-    }
+  /* Decorative gold divider */
+  .gold-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      oklch(var(--gold)),
+      transparent
+    );
+  }
 
-    /* Floating Animation */
-    .floating-card {
-        animation: float 6s ease-in-out infinite;
-    }
+  /* Menu dotted price line */
+  .menu-dots {
+    flex: 1;
+    border-bottom: 1px dotted oklch(0.55 0.1 68 / 0.45);
+    margin: 0 12px;
+    margin-bottom: 4px;
+  }
 
-    @keyframes float {
-        0%, 100% {
-            transform: translateY(0px);
-        }
-        50% {
-            transform: translateY(-10px);
-        }
+  /* Keyframes */
+  @keyframes accordion-down {
+    from {
+      height: 0;
     }
-
-    /* Fade In Animation */
-    .animate-fade-in {
-        animation: fadeIn 1s ease-out;
+    to {
+      height: var(--radix-accordion-content-height);
     }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
     }
-
-    /* Tech Node Animation */
-    .tech-node {
-        animation: techPulse 2s ease-in-out infinite;
+    to {
+      height: 0;
     }
-
-    @keyframes techPulse {
-        0%, 100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-        50% {
-            transform: scale(1.02);
-            opacity: 0.95;
-        }
-    }
-
-    /* Custom Colors */
-    .bg-space-black {
-        background-color: oklch(var(--space-black));
-    }
-
-    .text-neon-blue {
-        color: oklch(var(--neon-blue));
-    }
-
-    .text-electric-purple {
-        color: oklch(var(--electric-purple));
-    }
-
-    .border-neon-blue {
-        border-color: oklch(var(--neon-blue));
-    }
-
-    .border-electric-purple {
-        border-color: oklch(var(--electric-purple));
-    }
-
-    .bg-neon-blue {
-        background-color: oklch(var(--neon-blue));
-    }
-
-    .bg-electric-purple {
-        background-color: oklch(var(--electric-purple));
-    }
+  }
+  .animate-accordion-down {
+    animation: accordion-down 0.2s ease-out;
+  }
+  .animate-accordion-up {
+    animation: accordion-up 0.2s ease-out;
+  }
 }

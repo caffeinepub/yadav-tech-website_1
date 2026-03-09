@@ -1,142 +1,88 @@
-import Runtime "mo:core/Runtime";
-import Map "mo:core/Map";
-import Text "mo:core/Text";
 import Array "mo:core/Array";
-import Set "mo:core/Set";
-import Order "mo:core/Order";
+import Map "mo:core/Map";
+import Nat "mo:core/Nat";
 import Iter "mo:core/Iter";
 
 actor {
-  type ProjectType = {
-    website : Bool;
-    mobileApp : Bool;
-    aiIntegration : Bool;
-    ecommerce : Bool;
-    automation : Bool;
+  public type Message = {
+    id : Nat;
+    author : Text;
+    text : Text;
+    timestamp : Int;
   };
 
-  module ProjectType {
-    public func compare(project1 : ProjectType, project2 : ProjectType) : Order.Order {
-      let p1Features = ProjectType.featuresArray(project1).toText();
-      let p2Features = ProjectType.featuresArray(project2).toText();
-      Text.compare(p1Features, p2Features);
+  var messageId = 0;
+  let messages = Map.empty<Nat, Message>();
+
+  public shared ({ caller }) func sendUserMessage(text : Text) : async Message {
+    let userMessage : Message = {
+      id = messageId;
+      author = "user";
+      text;
+      timestamp = 0;
     };
 
-    public func featuresArray(project : ProjectType) : [Bool] {
-      [project.website, project.mobileApp, project.aiIntegration, project.ecommerce, project.automation];
-    };
+    messages.add(messageId, userMessage);
+    messageId += 1;
+
+    let botResponse = generateBotResponse(text);
+
+    messages.add(messageId, botResponse);
+    messageId += 1;
+
+    botResponse;
   };
 
-  type Estimate = {
-    projectType : ProjectType;
-    estimatedCost : Nat;
+  public query ({ caller }) func getConversation() : async [Message] {
+    let sortedMessages = messages.toArray().sort(
+      func(a, b) { Nat.compare(a.0, b.0) }
+    );
+    sortedMessages.map(func((_, msg)) { msg });
   };
 
-  module Estimate {
-    public func compare(estimate1 : Estimate, estimate2 : Estimate) : Order.Order {
-      switch (Nat.compare(estimate1.estimatedCost, estimate2.estimatedCost)) {
-        case (#equal) { ProjectType.compare(estimate1.projectType, estimate2.projectType) };
-        case (order) { order };
+  func generateBotResponse(userInput : Text) : Message {
+    let lowercaseInput = userInput.toLower();
+
+    let greetingPatterns : [(Text, Text)] = [
+      ("hi", "Hello! How can I assist you today?"),
+      ("hello", "Hi there! What can I do for you?"),
+      ("hey", "Hey! How can I help?"),
+    ];
+
+    let questionPatterns : [(Text, Text)] = [
+      ("services", "We offer website and mobile app development, AI integration, e-commerce solutions, and automation services."),
+      ("pricing", "Pricing depends on project complexity. Simple websites start at $2000, while advanced solutions may cost more."),
+      ("process", "Our process involves consultation, design, development, and ongoing support to ensure your satisfaction."),
+    ];
+
+    let responseText = switch (findPatternMatch(lowercaseInput, greetingPatterns)) {
+      case (?greeting) { greeting };
+      case (null) {
+        switch (findPatternMatch(lowercaseInput, questionPatterns)) {
+          case (?answer) { answer };
+          case (null) {"I'm here to help! Ask me about our services, pricing, or how we can assist your business."};
+        };
       };
     };
-  };
 
-  type ProjectId = Nat;
-
-  let projects = Map.empty<ProjectId, ProjectType>();
-  let estimates = Map.empty<ProjectId, Estimate>();
-
-  func calcEstimate(project : ProjectType) : Nat {
-    var cost = 0;
-    if (project.website) { cost += 2000 };
-    if (project.mobileApp) { cost += 3000 };
-    if (project.aiIntegration) { cost += 3500 };
-    if (project.ecommerce) { cost += 9000 };
-    if (project.automation) { cost += 4000 };
-    cost;
-  };
-
-  func validateProject(project : ProjectType) {
-    if (not (project.website or project.mobileApp)) {
-      Runtime.trap("At least one primary feature (website or mobileApp) must be selected.");
+    {
+      id = messageId;
+      author = "bot";
+      text = responseText;
+      timestamp = 0;
     };
   };
 
-  public shared ({ caller }) func estimateProject(project : ProjectType) : async Nat {
-    validateProject(project);
-    calcEstimate(project);
-  };
-
-  public shared ({ caller }) func createProjectType(website : Bool, mobileApp : Bool, aiIntegration : Bool, ecommerce : Bool, automation : Bool) : async Nat {
-    let newProject : ProjectType = {
-      website;
-      mobileApp;
-      aiIntegration;
-      ecommerce;
-      automation;
+  func findPatternMatch(input : Text, patterns : [(Text, Text)]) : ?Text {
+    let iter = patterns.values();
+    let found = iter.find(
+      func((pattern, _)) {
+        input.contains(#text pattern);
+      }
+    );
+    switch (found) {
+      case (?(_, response)) { ?response };
+      case (null) { null };
     };
-    validateProject(newProject);
-    let newId = projects.size() + 1;
-    projects.add(newId, newProject);
-
-    let estimatedCost = calcEstimate(newProject);
-    let newEstimate : Estimate = {
-      projectType = newProject;
-      estimatedCost;
-    };
-    estimates.add(newId, newEstimate);
-
-    newId;
-  };
-
-  public query ({ caller }) func getProjectType(id : ProjectId) : async ProjectType {
-    switch (projects.get(id)) {
-      case (null) { Runtime.trap("Project not found") };
-      case (?project) { project };
-    };
-  };
-
-  public query ({ caller }) func getEstimate(id : ProjectId) : async Estimate {
-    switch (estimates.get(id)) {
-      case (null) { Runtime.trap("Estimate not found") };
-      case (?estimate) { estimate };
-    };
-  };
-
-  public query ({ caller }) func getAllProjectTypes() : async [ProjectType] {
-    let projectTypes = Set.empty<ProjectType>();
-    for (project in projects.values()) {
-      projectTypes.add(project);
-    };
-    projectTypes.values().toArray();
-  };
-
-  public query ({ caller }) func getAllEstimates() : async [Estimate] {
-    estimates.values().toArray().sort();
-  };
-
-  public shared ({ caller }) func updateProjectType(id : ProjectId, website : Bool, mobileApp : Bool, aiIntegration : Bool, ecommerce : Bool, automation : Bool) : async Bool {
-    let project : ProjectType = {
-      website;
-      mobileApp;
-      aiIntegration;
-      ecommerce;
-      automation;
-    };
-    validateProject(project);
-    if (not projects.containsKey(id)) {
-      Runtime.trap("Project not found");
-    };
-
-    projects.add(id, project);
-
-    let estimatedCost = calcEstimate(project);
-    let newEstimate : Estimate = {
-      projectType = project;
-      estimatedCost;
-    };
-    estimates.add(id, newEstimate);
-
-    true;
   };
 };

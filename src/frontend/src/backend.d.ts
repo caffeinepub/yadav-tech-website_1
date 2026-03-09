@@ -7,24 +7,13 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
-export type ProjectId = bigint;
-export interface ProjectType {
-    aiIntegration: boolean;
-    website: boolean;
-    automation: boolean;
-    mobileApp: boolean;
-    ecommerce: boolean;
-}
-export interface Estimate {
-    projectType: ProjectType;
-    estimatedCost: bigint;
+export interface Message {
+    id: bigint;
+    text: string;
+    author: string;
+    timestamp: bigint;
 }
 export interface backendInterface {
-    createProjectType(website: boolean, mobileApp: boolean, aiIntegration: boolean, ecommerce: boolean, automation: boolean): Promise<bigint>;
-    estimateProject(project: ProjectType): Promise<bigint>;
-    getAllEstimates(): Promise<Array<Estimate>>;
-    getAllProjectTypes(): Promise<Array<ProjectType>>;
-    getEstimate(id: ProjectId): Promise<Estimate>;
-    getProjectType(id: ProjectId): Promise<ProjectType>;
-    updateProjectType(id: ProjectId, website: boolean, mobileApp: boolean, aiIntegration: boolean, ecommerce: boolean, automation: boolean): Promise<boolean>;
+    getConversation(): Promise<Array<Message>>;
+    sendUserMessage(text: string): Promise<Message>;
 }
