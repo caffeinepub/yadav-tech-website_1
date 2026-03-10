@@ -1,214 +1,355 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  ChevronDown,
-  Clock,
-  Facebook,
-  Instagram,
+  ArrowRight,
+  Award,
+  Bot,
+  CheckCircle,
+  Cloud,
+  Code2,
+  Globe,
+  HeadphonesIcon,
   Mail,
   MapPin,
+  Menu,
+  MessageCircle,
+  Palette,
   Phone,
-  Twitter,
+  Send,
+  Smartphone,
+  Star,
+  TrendingUp,
+  Users,
+  X,
+  Zap,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// ─── Scroll-reveal hook ───────────────────────────────────────────────────────
-function useReveal() {
+// ─── Scroll Reveal Hook ───────────────────────────────────────────────────────
+function useScrollReveal() {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentional
   useEffect(() => {
-    const els = document.querySelectorAll(".reveal");
-    const obs = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) e.target.classList.add("visible");
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
         }
       },
-      { threshold: 0.12 },
+      { threshold: 0.1 },
     );
-    for (const el of els) obs.observe(el);
-    return () => obs.disconnect();
+    const els = document.querySelectorAll(".reveal");
+    for (const el of els) observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 }
 
-// ─── Static data ─────────────────────────────────────────────────────────────
-const signatureDishes = [
-  {
-    name: "Buttermilk Fried Chicken",
-    desc: "Heritage-breed chicken, buttermilk brine, hot honey glaze",
-    img: "/assets/Screenshot_20260310_041031.jpg",
-    position: "center 35%",
-  },
-  {
-    name: "Honey Glazed Biscuits",
-    desc: "Warm, flaky biscuits with cinnamon butter and pimento cheese",
-    img: "/assets/Screenshot_20260310_041026.jpg",
-    position: "center 30%",
-  },
-  {
-    name: "New Orleans BBQ Shrimp",
-    desc: "Gulf shrimp in rich bourbon butter sauce, crusty bread",
-    img: "/assets/Screenshot_20260310_041035.jpg",
-    position: "center 35%",
-  },
-  {
-    name: "Fried Chicken Sliders",
-    desc: "Crispy fried chicken on brioche buns with house sauce",
-    img: "/assets/Screenshot_20260310_041024.jpg",
-    position: "center 30%",
-  },
-  {
-    name: "Fresh Beignets",
-    desc: "Light-as-air, dusted with powdered sugar, Café Du Monde style",
-    img: "/assets/Screenshot_20260310_040957.jpg",
-    position: "center 30%",
-  },
-];
+// ─── Chatbot ──────────────────────────────────────────────────────────────────
+const chatResponses: Record<string, string> = {
+  default:
+    "I'm here to help! You can ask me about our services, pricing, projects, or how to contact us. 😊",
+  hello:
+    "Hello there! 👋 I'm Yadav AI. What can I help you with today? Ask me about our AI web development, mobile apps, chatbots, or pricing!",
+  hi: "Hi! Great to meet you! 😊 I'm Yadav AI assistant. How can I assist you today?",
+  services:
+    "We offer: 🌐 AI Web Development, 📱 Mobile App Development, 🤖 AI Chatbot Integration, ☁️ Cloud & DevOps, 🎨 UI/UX Design, and 📈 Digital Marketing & SEO. Which interests you?",
+  pricing:
+    "Our plans: 💚 Starter ($499) — perfect for small businesses. 💙 Professional ($999) — ideal for growing companies. 💜 Enterprise ($2499) — for large-scale projects. Want details on any plan?",
+  contact:
+    "You can reach us at: 📞 +91 7678643475, 📧 yadavtech@gmail.com, or 💬 WhatsApp: wa.me/917678643475. We respond within 24 hours!",
+  projects:
+    "We've delivered 100+ successful projects including AI dashboards, SaaS platforms, mobile apps, and enterprise chatbots. Our clients love us! ⭐⭐⭐⭐⭐",
+  ai: "We specialize in cutting-edge AI solutions: intelligent chatbots, machine learning integrations, computer vision, NLP, and AI-powered analytics. The future is now! 🚀",
+  web: "Our web development covers React, Next.js, Node.js, Python/Django, and full-stack AI applications. We build fast, scalable, and beautiful web apps. 🌐",
+  mobile:
+    "We build cross-platform mobile apps with Flutter and React Native, plus native iOS/Android. AI-powered features included! 📱",
+  time: "Project timelines vary: Simple websites 2-4 weeks, Mobile apps 4-8 weeks, Complex AI systems 8-16 weeks. We always deliver on time! ⏱️",
+  thanks:
+    "You're very welcome! 😊 Is there anything else I can help you with? We're always here to assist!",
+  bye: "Goodbye! 👋 Feel free to come back anytime. Have a great day! 🌟",
+};
 
-const menuCategories = [
-  {
-    id: "biscuits",
-    label: "Biscuits",
-    items: [{ name: "Warm Honey Glazed Biscuits", price: "$16" }],
-  },
-  {
-    id: "tapas",
-    label: "Tapas",
-    items: [
-      { name: "Chili Grilled Broccoli", price: "$12" },
-      { name: "Braised Lamb Stuffed Shells", price: "$17" },
-      { name: "Marinated Tenderloin Steak Tips", price: "$19" },
-      { name: "Charred Octopus", price: "$17" },
-      { name: "Louisiana Crawfish Arancini", price: "$13" },
-      { name: "Pan Seared Redfish", price: "$16" },
-    ],
-  },
-  {
-    id: "chicken",
-    label: "Fried Chicken",
-    items: [
-      { name: "Chicken Wings", price: "$14" },
-      { name: "Boneless Fried Chicken Thighs", price: "$16" },
-    ],
-  },
-  {
-    id: "seafood",
-    label: "Seafood",
-    items: [
-      { name: "New Orleans BBQ Shrimp", price: "$15" },
-      { name: "Steamed Mussels", price: "$14" },
-      { name: "Cajun Grilled Swordfish", price: "$15" },
-    ],
-  },
-  {
-    id: "sliders",
-    label: "Sliders",
-    items: [
-      { name: "Wagyu Burger Sliders", price: "$13" },
-      { name: "Fried Chicken Sliders", price: "$14" },
-    ],
-  },
-  {
-    id: "salads",
-    label: "Salads",
-    items: [
-      { name: "Baby Arugula & Blackberry Salad", price: "$12" },
-      { name: "Roasted Carrot Salad", price: "$12" },
-    ],
-  },
-  {
-    id: "sides",
-    label: "Sides",
-    items: [
-      { name: "Rosemary French Fries", price: "$7" },
-      { name: "Creamy Cheddar Grits", price: "$6" },
-      { name: "Wilted Garlic Spinach", price: "$8" },
-      { name: "Grilled Focaccia Toast", price: "$4" },
-      { name: "Apple Slaw", price: "$6" },
-    ],
-  },
-  {
-    id: "desserts",
-    label: "Desserts",
-    items: [
-      { name: "Fresh Fried Beignets", price: "$10" },
-      { name: "Apple Crumble Bread Pudding", price: "$13" },
-      { name: "Blueberry Shortcake", price: "$12" },
-      { name: "Soft Serve Ice Cream", price: "$5" },
-    ],
-  },
-];
+function getChatResponse(input: string): string {
+  const lower = input.toLowerCase();
+  if (lower.includes("hello") || lower.includes("hey"))
+    return chatResponses.hello;
+  if (lower.includes("hi")) return chatResponses.hi;
+  if (
+    lower.includes("service") ||
+    lower.includes("offer") ||
+    lower.includes("do you")
+  )
+    return chatResponses.services;
+  if (
+    lower.includes("pric") ||
+    lower.includes("cost") ||
+    lower.includes("plan") ||
+    lower.includes("package")
+  )
+    return chatResponses.pricing;
+  if (
+    lower.includes("contact") ||
+    lower.includes("reach") ||
+    lower.includes("phone") ||
+    lower.includes("email")
+  )
+    return chatResponses.contact;
+  if (
+    lower.includes("project") ||
+    lower.includes("work") ||
+    lower.includes("portfolio") ||
+    lower.includes("client")
+  )
+    return chatResponses.projects;
+  if (lower.includes("ai") || lower.includes("machine") || lower.includes("ml"))
+    return chatResponses.ai;
+  if (
+    lower.includes("web") ||
+    lower.includes("website") ||
+    lower.includes("react")
+  )
+    return chatResponses.web;
+  if (
+    lower.includes("mobile") ||
+    lower.includes("app") ||
+    lower.includes("flutter")
+  )
+    return chatResponses.mobile;
+  if (
+    lower.includes("time") ||
+    lower.includes("how long") ||
+    lower.includes("timeline") ||
+    lower.includes("deadline")
+  )
+    return chatResponses.time;
+  if (lower.includes("thank")) return chatResponses.thanks;
+  if (lower.includes("bye") || lower.includes("goodbye"))
+    return chatResponses.bye;
+  return chatResponses.default;
+}
 
-// Gallery — 10 real photos, some spanning 2 columns for visual rhythm
-const galleryImages = [
-  {
-    src: "/assets/Screenshot_20260310_041003.jpg",
-    label: "Commonwealth Ave",
-    span: "col-span-2",
-    position: "center 35%",
-  },
-  {
-    src: "/assets/Screenshot_20260310_041007.jpg",
-    label: "Chicken Wings",
-    span: "",
-    position: "center 35%",
-  },
-  {
-    src: "/assets/Screenshot_20260310_041019.jpg",
-    label: "Signature Cocktail",
-    span: "",
-    position: "center 35%",
-  },
-  {
-    src: "/assets/Screenshot_20260310_041021.jpg",
-    label: "Fresh Beignets",
-    span: "",
-    position: "center 30%",
-  },
-  {
-    src: "/assets/Screenshot_20260310_041005.jpg",
-    label: "Nashville Hot Chicken Sliders",
-    span: "",
-    position: "center 35%",
-  },
-  {
-    src: "/assets/Screenshot_20260310_041015.jpg",
-    label: "Chicken & Waffle",
-    span: "",
-    position: "center 35%",
-  },
-  {
-    src: "/assets/Screenshot_20260310_041029.jpg",
-    label: "Crispy Alligator Fries",
-    span: "",
-    position: "center 35%",
-  },
-  {
-    src: "/assets/Screenshot_20260310_041009.jpg",
-    label: "Grilled Fish with Black Beans",
-    span: "",
-    position: "center 35%",
-  },
-  {
-    src: "/assets/Screenshot_20260310_041013.jpg",
-    label: "Chicken over Cheddar Grits",
-    span: "",
-    position: "center 35%",
-  },
-  {
-    src: "/assets/Screenshot_20260310_041001.jpg",
-    label: "Baby Arugula & Blackberry Salad",
-    span: "col-span-2",
-    position: "center 35%",
-  },
-];
+interface ChatMessage {
+  id: number;
+  role: "user" | "bot";
+  text: string;
+}
+
+function ChatWidget() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: 0,
+      role: "bot",
+      text: "Hi! I'm Yadav AI 🤖 How can I help you today?",
+    },
+  ]);
+  const msgIdRef = useRef(1);
+  const [input, setInput] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentional scroll on messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+    const uid = msgIdRef.current++;
+    const bid = msgIdRef.current++;
+    const userMsg: ChatMessage = { id: uid, role: "user", text: input };
+    const botMsg: ChatMessage = {
+      id: bid,
+      role: "bot",
+      text: getChatResponse(input),
+    };
+    setMessages((prev) => [...prev, userMsg]);
+    setInput("");
+    setTimeout(() => {
+      setMessages((prev) => [...prev, botMsg]);
+    }, 600);
+  };
+
+  return (
+    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-2">
+      {open && (
+        <div
+          className="chat-widget glass-card rounded-2xl shadow-2xl"
+          style={{
+            width: "320px",
+            maxWidth: "calc(100vw - 3rem)",
+            border: "1px solid oklch(72 0.24 210 / 0.3)",
+            boxShadow: "0 0 40px oklch(72 0.24 210 / 0.2)",
+          }}
+          data-ocid="chatbot.panel"
+        >
+          {/* Header */}
+          <div
+            className="flex items-center justify-between p-4 rounded-t-2xl"
+            style={{
+              background:
+                "linear-gradient(135deg, oklch(55 0.28 295), oklch(72 0.24 210))",
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <img
+                src="/assets/generated/robot-avatar.dim_64x64.png"
+                alt="Yadav AI"
+                className="w-10 h-10 rounded-full"
+              />
+              <div>
+                <p className="font-display font-semibold text-white text-sm">
+                  Yadav AI
+                </p>
+                <div className="flex items-center gap-1">
+                  <div
+                    className="w-2 h-2 rounded-full bg-green-400"
+                    style={{ boxShadow: "0 0 6px #4ade80" }}
+                  />
+                  <span className="text-white/80 text-xs">Online</span>
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="text-white/70 hover:text-white transition-colors"
+              data-ocid="chatbot.close_button"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div
+            className="p-4 space-y-3 overflow-y-auto"
+            style={{ height: "280px" }}
+          >
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${
+                  msg.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                {msg.role === "bot" && (
+                  <img
+                    src="/assets/generated/robot-avatar.dim_64x64.png"
+                    alt="bot"
+                    className="w-7 h-7 rounded-full mr-2 flex-shrink-0 self-end"
+                  />
+                )}
+                <div
+                  className="rounded-2xl px-3 py-2 text-sm max-w-[75%]"
+                  style={{
+                    background:
+                      msg.role === "user"
+                        ? "linear-gradient(135deg, oklch(72 0.24 210), oklch(55 0.28 295))"
+                        : "oklch(18 0.04 264)",
+                    color: "white",
+                    borderRadius:
+                      msg.role === "user"
+                        ? "18px 18px 4px 18px"
+                        : "18px 18px 18px 4px",
+                  }}
+                >
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input */}
+          <div
+            className="p-3 border-t"
+            style={{ borderColor: "oklch(72 0.24 210 / 0.2)" }}
+          >
+            <div className="flex gap-2">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                placeholder="Type a message..."
+                className="flex-1 bg-transparent text-white text-sm outline-none placeholder:text-white/40"
+                data-ocid="chatbot.input"
+              />
+              <button
+                type="button"
+                onClick={sendMessage}
+                className="text-white/70 hover:text-white transition-colors"
+                data-ocid="chatbot.submit_button"
+              >
+                <Send size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toggle button */}
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="w-14 h-14 rounded-full flex items-center justify-center shadow-2xl pulse-glow transition-transform hover:scale-110"
+        style={{
+          background:
+            "linear-gradient(135deg, oklch(55 0.28 295), oklch(72 0.24 210))",
+        }}
+        data-ocid="chatbot.open_modal_button"
+        title="Chat with Yadav AI"
+      >
+        {open ? (
+          <X size={22} color="white" />
+        ) : (
+          <img
+            src="/assets/generated/robot-avatar.dim_64x64.png"
+            alt="AI Chat"
+            className="w-9 h-9 rounded-full"
+          />
+        )}
+      </button>
+    </div>
+  );
+}
+
+// ─── WhatsApp Button ──────────────────────────────────────────────────────────
+function WhatsAppButton() {
+  return (
+    <a
+      href="https://wa.me/917678643475"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 group"
+      style={{
+        background: "#25d366",
+        boxShadow: "0 0 30px rgba(37, 211, 102, 0.4)",
+      }}
+      data-ocid="whatsapp.button"
+      title="Chat on WhatsApp"
+    >
+      <svg
+        viewBox="0 0 32 32"
+        width="28"
+        height="28"
+        fill="white"
+        role="img"
+        aria-label="WhatsApp"
+      >
+        <title>WhatsApp</title>
+        <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.832 4.584 2.236 6.348L4 29l7.875-2.21A11.94 11.94 0 0016 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 22c-1.944 0-3.747-.523-5.29-1.433l-.38-.228-4.667 1.31 1.297-4.571-.248-.394A9.953 9.953 0 016 15c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10zm5.5-7.5c-.3-.15-1.77-.874-2.046-.975-.275-.1-.475-.15-.674.15-.2.3-.774.975-.95 1.176-.175.2-.35.225-.65.075-.3-.15-1.267-.467-2.413-1.488-.892-.795-1.494-1.776-1.67-2.076-.174-.3-.018-.463.132-.613.134-.133.3-.35.45-.525.15-.174.2-.3.3-.5.1-.2.05-.374-.025-.524-.075-.15-.674-1.626-.924-2.226-.244-.586-.492-.507-.674-.516l-.575-.01a1.1 1.1 0 00-.8.376c-.274.3-1.05 1.026-1.05 2.5s1.075 2.9 1.225 3.1c.15.2 2.116 3.226 5.124 4.526.716.308 1.274.492 1.71.63.718.229 1.372.197 1.888.12.576-.086 1.77-.723 2.02-1.422.252-.7.252-1.3.177-1.424-.076-.125-.276-.2-.576-.35z" />
+      </svg>
+      {/* Tooltip */}
+      <span
+        className="absolute right-16 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none"
+        style={{ border: "1px solid oklch(72 0.24 210 / 0.3)" }}
+      >
+        Chat on WhatsApp
+      </span>
+    </a>
+  );
+}
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 function Navbar() {
@@ -216,259 +357,360 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTo = (id: string) => {
-    setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const navLinks = [
-    { label: "About", id: "about", ocid: undefined },
-    { label: "Menu", id: "menu", ocid: "nav.menu_link" },
-    { label: "Gallery", id: "gallery", ocid: undefined },
-    {
-      label: "Reservations",
-      id: "reservations",
-      ocid: "nav.reservations_link",
-    },
-    { label: "Location", id: "location", ocid: undefined },
+  const links = [
+    { label: "Home", href: "#home" },
+    { label: "About", href: "#about" },
+    { label: "Services", href: "#services" },
+    { label: "Products", href: "#products" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Contact", href: "#contact" },
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-[oklch(0.10_0.008_45/0.97)] backdrop-blur-md shadow-lg shadow-black/40"
-          : "bg-transparent"
+    <nav
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        scrolled ? "glass-card" : "bg-transparent"
       }`}
+      style={{
+        borderBottom: scrolled ? "1px solid oklch(72 0.24 210 / 0.2)" : "none",
+      }}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <button
-          type="button"
-          onClick={() => scrollTo("hero")}
-          className="flex items-center gap-3"
+        <a
+          href="#home"
+          className="flex items-center gap-2"
+          data-ocid="nav.link"
         >
-          <div className="w-10 h-10 rounded-full border border-[oklch(0.72_0.14_68)] flex items-center justify-center bg-[oklch(0.16_0.01_45)]">
-            <span className="font-display text-sm font-bold text-gold">
-              B&amp;B
-            </span>
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            style={{
+              background:
+                "linear-gradient(135deg, oklch(72 0.24 210), oklch(55 0.28 295))",
+            }}
+          >
+            <Zap size={16} color="white" />
           </div>
-          <span className="font-display text-lg tracking-wide text-cream hidden sm:block">
-            Buttermilk &amp; Bourbon
+          <span className="font-display font-bold text-xl text-white">
+            Yadav <span className="gradient-text">Tech</span>
           </span>
-        </button>
+        </a>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <button
-              key={link.id}
-              type="button"
-              data-ocid={link.ocid}
-              onClick={() => scrollTo(link.id)}
-              className="font-body text-sm tracking-widest uppercase text-cream-muted hover:text-gold transition-colors duration-200"
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-8">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="text-white/70 hover:text-white transition-colors text-sm font-medium"
+              data-ocid="nav.link"
             >
-              {link.label}
-            </button>
+              {l.label}
+            </a>
           ))}
-        </nav>
+        </div>
 
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          className="md:hidden text-cream p-2"
-          onClick={() => setMenuOpen((v) => !v)}
-          aria-label="Toggle menu"
-        >
-          <div className="space-y-1.5">
+        {/* CTA + Mobile */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            className="hidden md:block btn-neon px-5 py-2 rounded-full text-sm font-semibold relative z-10"
+            data-ocid="nav.primary_button"
+            onClick={() =>
+              document
+                .querySelector("#contact")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
+            Get Started
+          </button>
+          <button
+            type="button"
+            className="md:hidden flex flex-col gap-1.5 p-2"
+            onClick={() => setMenuOpen((o) => !o)}
+            data-ocid="nav.toggle"
+          >
             <span
-              className={`block h-0.5 w-6 bg-cream transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
+              className={`hamburger-line ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
             />
+            <span className={`hamburger-line ${menuOpen ? "opacity-0" : ""}`} />
             <span
-              className={`block h-0.5 w-6 bg-cream transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
+              className={`hamburger-line ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
             />
-            <span
-              className={`block h-0.5 w-6 bg-cream transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
-            />
-          </div>
-        </button>
+          </button>
+        </div>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[oklch(0.12_0.008_45/0.97)] backdrop-blur-md border-t border-[oklch(0.25_0.015_55)]">
-          <nav className="flex flex-col py-4">
-            {navLinks.map((link) => (
-              <button
-                key={link.id}
-                type="button"
-                data-ocid={link.ocid}
-                onClick={() => scrollTo(link.id)}
-                className="px-6 py-3 text-left font-body text-sm tracking-widest uppercase text-cream-muted hover:text-gold hover:bg-[oklch(0.18_0.01_45)] transition-colors"
+        <div
+          className="md:hidden glass-card border-t"
+          style={{ borderColor: "oklch(72 0.24 210 / 0.2)" }}
+        >
+          <div className="px-6 py-4 flex flex-col gap-4">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-white/80 hover:text-white text-base font-medium transition-colors"
+                onClick={() => setMenuOpen(false)}
+                data-ocid="nav.link"
               >
-                {link.label}
-              </button>
+                {l.label}
+              </a>
             ))}
-          </nav>
+            <button
+              type="button"
+              className="btn-neon w-full py-2.5 rounded-full text-sm font-semibold relative z-10"
+              onClick={() => {
+                setMenuOpen(false);
+                document
+                  .querySelector("#contact")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              Get Started
+            </button>
+          </div>
         </div>
       )}
-    </header>
+    </nav>
   );
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
-function Hero() {
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-
+function HeroSection() {
   return (
     <section
-      id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden"
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{
+        background: "linear-gradient(180deg, #050510 0%, #0a0a1a 100%)",
+      }}
     >
-      {/* Background — generated cinematic hero */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: "url('/assets/generated/hero-bg.dim_1920x1080.jpg')",
-        }}
-      />
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.08_0.008_45/0.55)] via-[oklch(0.08_0.008_45/0.72)] to-[oklch(0.08_0.008_45/0.93)]" />
+      {/* Grid Background */}
+      <div className="absolute inset-0 ai-grid-bg opacity-60" />
 
-      {/* Content */}
-      <div className="relative z-10 px-6 max-w-4xl mx-auto">
-        <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 border border-[oklch(0.72_0.14_68/0.5)] rounded-full">
-          <span className="w-1.5 h-1.5 rounded-full bg-gold" />
-          <span className="font-body text-xs tracking-[0.25em] uppercase text-gold">
-            160 Commonwealth Ave, Boston
-          </span>
+      {/* Glow Orbs */}
+      <div
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20"
+        style={{ background: "oklch(72 0.24 210)" }}
+      />
+      <div
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl opacity-15"
+        style={{ background: "oklch(55 0.28 295)" }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16 flex flex-col lg:flex-row items-center gap-12">
+        {/* Text */}
+        <div className="flex-1 text-center lg:text-left">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
+            style={{
+              background: "oklch(72 0.24 210 / 0.1)",
+              border: "1px solid oklch(72 0.24 210 / 0.3)",
+              color: "var(--neon-blue)",
+            }}
+          >
+            <Zap size={14} />
+            <span>AI-Powered Technology Solutions</span>
+          </div>
+
+          <h1 className="font-display font-bold leading-tight mb-6">
+            <span
+              className="block text-5xl md:text-6xl lg:text-7xl text-white"
+              style={{ lineHeight: 1.1 }}
+            >
+              Build the Future
+            </span>
+            <span
+              className="block text-5xl md:text-6xl lg:text-7xl gradient-text"
+              style={{ lineHeight: 1.2 }}
+            >
+              with AI
+            </span>
+          </h1>
+
+          <p className="text-white/60 text-lg md:text-xl max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed">
+            We craft cutting-edge AI-powered web apps, mobile solutions, and
+            intelligent systems that transform businesses and define the next
+            generation of technology.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <button
+              type="button"
+              className="btn-neon px-8 py-3.5 rounded-full font-semibold text-base relative z-10 flex items-center gap-2"
+              data-ocid="hero.primary_button"
+              onClick={() =>
+                document
+                  .querySelector("#contact")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Start Your Project <ArrowRight size={18} />
+            </button>
+            <button
+              type="button"
+              className="btn-outline-neon px-8 py-3.5 rounded-full font-semibold text-base flex items-center gap-2"
+              data-ocid="hero.secondary_button"
+              onClick={() =>
+                document
+                  .querySelector("#products")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Watch Demo <Bot size={18} />
+            </button>
+          </div>
+
+          {/* Stats */}
+          <div className="flex gap-8 mt-12 justify-center lg:justify-start">
+            {[
+              { value: "100+", label: "Projects" },
+              { value: "50+", label: "Clients" },
+              { value: "5 Yrs", label: "Experience" },
+            ].map((stat) => (
+              <div key={stat.label}>
+                <p className="font-display font-bold text-2xl text-white text-glow-blue">
+                  {stat.value}
+                </p>
+                <p className="text-white/50 text-sm">{stat.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-cream leading-none mb-4">
-          Buttermilk
-          <span className="block italic text-gold">&amp; Bourbon</span>
-        </h1>
-
-        <p className="font-body text-base md:text-xl tracking-[0.15em] uppercase text-cream-muted mb-2">
-          Southern Comfort Food &amp; Bourbon Bar
-        </p>
-
-        <div className="gold-divider mx-auto my-6" />
-
-        <p className="font-body text-cream-muted text-sm md:text-base max-w-lg mx-auto mb-10 leading-relaxed">
-          A culinary journey through the heart of New Orleans, brought to
-          Boston&apos;s Back Bay by celebrity chef Jason Santos.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button
-            data-ocid="hero.view_menu_button"
-            onClick={() => scrollTo("menu")}
-            className="bg-gold text-[oklch(0.12_0.008_45)] hover:bg-[oklch(0.82_0.12_80)] font-body text-sm tracking-[0.15em] uppercase px-8 py-3 h-auto rounded-none font-semibold transition-all duration-300"
-          >
-            View Menu
-          </Button>
-          <Button
-            data-ocid="hero.reserve_button"
-            onClick={() => scrollTo("reservations")}
-            variant="outline"
-            className="border-cream text-cream hover:bg-cream hover:text-[oklch(0.12_0.008_45)] font-body text-sm tracking-[0.15em] uppercase px-8 py-3 h-auto rounded-none bg-transparent transition-all duration-300"
-          >
-            Reserve a Table
-          </Button>
+        {/* Sphere Image */}
+        <div className="flex-1 flex justify-center">
+          <div className="relative">
+            <div
+              className="absolute inset-0 rounded-full blur-3xl opacity-30"
+              style={{ background: "oklch(72 0.24 210)" }}
+            />
+            <img
+              src="/assets/generated/ai-sphere.dim_600x600.png"
+              alt="AI Sphere"
+              className="relative z-10 float-animation"
+              style={{ width: "min(480px, 85vw)", height: "auto" }}
+            />
+          </div>
         </div>
       </div>
 
-      <button
-        type="button"
-        onClick={() => scrollTo("about")}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-cream-muted hover:text-gold transition-colors animate-bounce"
-        aria-label="Scroll down"
-      >
-        <ChevronDown className="w-6 h-6" />
-      </button>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+        <span className="text-white/40 text-xs">Scroll to explore</span>
+        <div
+          className="w-5 h-8 rounded-full border-2 flex items-start justify-center p-1"
+          style={{ borderColor: "oklch(72 0.24 210 / 0.4)" }}
+        >
+          <div
+            className="w-1 h-2 rounded-full animate-bounce"
+            style={{ background: "var(--neon-blue)" }}
+          />
+        </div>
+      </div>
     </section>
   );
 }
 
 // ─── About ────────────────────────────────────────────────────────────────────
-function About() {
+function AboutSection() {
   return (
-    <section id="about" className="py-24 md:py-32 bg-[oklch(0.14_0.009_45)]">
+    <section id="about" className="py-24" style={{ background: "#070714" }}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Image — generated interior photo */}
-          <div className="reveal relative">
-            <div className="overflow-hidden" style={{ aspectRatio: "4/3" }}>
+        <div className="flex flex-col lg:flex-row items-center gap-16">
+          {/* Photo */}
+          <div className="relative reveal">
+            <div
+              className="absolute -inset-4 rounded-3xl blur-2xl opacity-30"
+              style={{
+                background:
+                  "linear-gradient(135deg, oklch(72 0.24 210), oklch(55 0.28 295))",
+              }}
+            />
+            <div className="gradient-border rounded-3xl p-1 relative z-10">
               <img
-                src="/assets/generated/restaurant-interior.dim_1200x800.jpg"
-                alt="Buttermilk & Bourbon dining room"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                style={{ objectPosition: "center center" }}
+                src="/assets/generated/founder-nitesh.dim_400x400.png"
+                alt="Nitesh Yadav - Founder"
+                className="w-72 h-72 object-cover rounded-3xl"
               />
             </div>
-            <div className="absolute -bottom-4 -right-4 w-2/3 h-2/3 border border-[oklch(0.72_0.14_68/0.3)] -z-10 hidden lg:block" />
-            <div className="absolute -top-4 -left-4 bg-[oklch(0.16_0.01_45)] border border-[oklch(0.72_0.14_68/0.5)] px-4 py-3 shadow-xl">
-              <p className="font-display text-gold text-xs italic">Est. 2014</p>
-              <p className="font-body text-cream text-xs tracking-widest uppercase mt-0.5">
-                Boston, MA
+            {/* Badge */}
+            <div
+              className="absolute -bottom-4 -right-4 glass-card rounded-2xl px-4 py-3 text-center z-20"
+              style={{ border: "1px solid oklch(78 0.18 70 / 0.4)" }}
+            >
+              <p className="gradient-text-gold font-display font-bold text-xl">
+                5+
               </p>
+              <p className="text-white/60 text-xs">Years in AI</p>
             </div>
           </div>
 
-          {/* Text */}
-          <div className="reveal reveal-delay-2">
-            <p className="font-body text-xs tracking-[0.3em] uppercase text-gold mb-4">
-              Our Story
-            </p>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-cream leading-tight mb-6">
-              Where Southern Soul
-              <span className="block italic text-gold">
-                Meets Boston Refinement
-              </span>
+          {/* Content */}
+          <div className="flex-1 reveal">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-4"
+              style={{
+                background: "oklch(55 0.28 295 / 0.1)",
+                border: "1px solid oklch(55 0.28 295 / 0.3)",
+                color: "oklch(65 0.28 295)",
+              }}
+            >
+              <Star size={14} /> Meet the Founder
+            </div>
+            <h2 className="font-display font-bold text-4xl md:text-5xl text-white mb-2">
+              Nitesh Yadav
             </h2>
-            <div className="gold-divider mb-8" />
-            <p className="font-body text-cream-muted leading-relaxed mb-6">
-              Celebrity chef Jason Santos brings New Orleans-inspired southern
-              comfort cuisine to Boston&apos;s Back Bay. Drawing from the soul
-              of Louisiana cooking, Buttermilk &amp; Bourbon celebrates bold
-              flavors, heritage recipes, and the warmth of Southern hospitality.
+            <p className="gradient-text font-medium text-lg mb-6">
+              Visionary AI Entrepreneur & Tech Innovator
             </p>
-            <p className="font-body text-cream-muted leading-relaxed mb-8">
-              From hand-crafted buttermilk fried chicken to decadent beignets,
-              every dish tells a story rooted in tradition, elevated with the
-              finest New England ingredients.
+            <p className="text-white/60 text-base leading-relaxed mb-6">
+              With over 5 years of experience at the intersection of artificial
+              intelligence and software engineering, Nitesh Yadav has led 100+
+              successful digital transformations for clients across India, USA,
+              and Europe. His passion for AI-driven innovation drives every
+              product Yadav Tech builds.
             </p>
-            <div className="border-l-2 border-[oklch(0.72_0.14_68)] pl-6">
-              <p className="font-display text-xl italic text-cream mb-2">
-                &ldquo;Southern food is love made edible — bold, generous, and
-                unforgettable.&rdquo;
-              </p>
-              <p className="font-body text-sm text-gold tracking-widest uppercase">
-                — Chef Jason Santos
-              </p>
-            </div>
-            <div className="grid grid-cols-3 gap-6 mt-10 pt-8 border-t border-[oklch(0.25_0.015_55)]">
-              {[
-                { num: "10+", label: "Years" },
-                { num: "4.8★", label: "Rating" },
-                { num: "40+", label: "Bourbons" },
-              ].map((s) => (
-                <div key={s.label} className="text-center">
-                  <p className="font-display text-2xl font-bold text-gold">
-                    {s.num}
-                  </p>
-                  <p className="font-body text-xs text-cream-muted tracking-widest uppercase mt-1">
-                    {s.label}
-                  </p>
-                </div>
-              ))}
+            <p className="text-white/60 text-base leading-relaxed mb-8">
+              From startup MVPs to enterprise-grade AI platforms, Nitesh
+              combines technical mastery with business acumen to deliver
+              solutions that don't just work — they make a measurable
+              difference.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="tel:+917678643475"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105"
+                style={{
+                  background: "oklch(72 0.24 210 / 0.1)",
+                  border: "1px solid oklch(72 0.24 210 / 0.3)",
+                  color: "var(--neon-blue)",
+                }}
+              >
+                <Phone size={15} /> +91 7678643475
+              </a>
+              <a
+                href="https://wa.me/917678643475"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105"
+                style={{
+                  background: "rgba(37, 211, 102, 0.1)",
+                  border: "1px solid rgba(37, 211, 102, 0.3)",
+                  color: "#25d366",
+                }}
+              >
+                <MessageCircle size={15} /> WhatsApp
+              </a>
             </div>
           </div>
         </div>
@@ -477,50 +719,104 @@ function About() {
   );
 }
 
-// ─── Signature Dishes ─────────────────────────────────────────────────────────
-function SignatureDishes() {
+// ─── Services ─────────────────────────────────────────────────────────────────
+const services = [
+  {
+    icon: Code2,
+    title: "AI Web Development",
+    desc: "Full-stack AI-powered web applications built with React, Next.js, Node.js, and Python. Scalable, fast, and intelligent.",
+    color: "oklch(72 0.24 210)",
+    colorBg: "oklch(72 0.24 210 / 0.15)",
+    colorBorder: "1px solid oklch(72 0.24 210 / 0.3)",
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile App Development",
+    desc: "Cross-platform mobile apps with Flutter and React Native. Native performance with AI-driven features built in.",
+    color: "oklch(55 0.28 295)",
+    colorBg: "oklch(55 0.28 295 / 0.15)",
+    colorBorder: "1px solid oklch(55 0.28 295 / 0.3)",
+  },
+  {
+    icon: Bot,
+    title: "AI Chatbot Integration",
+    desc: "Intelligent conversational AI powered by GPT and custom NLP models. 24/7 customer support that never sleeps.",
+    color: "oklch(78 0.18 70)",
+    colorBg: "oklch(78 0.18 70 / 0.15)",
+    colorBorder: "1px solid oklch(78 0.18 70 / 0.3)",
+  },
+  {
+    icon: Cloud,
+    title: "Cloud & DevOps",
+    desc: "AWS, GCP, Azure deployment with CI/CD pipelines, Kubernetes orchestration, and infrastructure as code.",
+    color: "oklch(72 0.24 210)",
+    colorBg: "oklch(72 0.24 210 / 0.15)",
+    colorBorder: "1px solid oklch(72 0.24 210 / 0.3)",
+  },
+  {
+    icon: Palette,
+    title: "UI/UX Design",
+    desc: "Stunning, user-centric interfaces that convert. From wireframes to pixel-perfect, animated design systems.",
+    color: "oklch(55 0.28 295)",
+    colorBg: "oklch(55 0.28 295 / 0.15)",
+    colorBorder: "1px solid oklch(55 0.28 295 / 0.3)",
+  },
+  {
+    icon: TrendingUp,
+    title: "Digital Marketing & SEO",
+    desc: "Data-driven SEO, content marketing, and growth hacking strategies to dominate search and social channels.",
+    color: "oklch(78 0.18 70)",
+    colorBg: "oklch(78 0.18 70 / 0.15)",
+    colorBorder: "1px solid oklch(78 0.18 70 / 0.3)",
+  },
+];
+
+function ServicesSection() {
   return (
-    <section id="dishes" className="py-24 md:py-32 bg-espresso overflow-hidden">
+    <section id="services" className="py-24" style={{ background: "#050510" }}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-14 reveal">
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-gold mb-3">
-            Chef&apos;s Selection
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-cream">
-            Signature Dishes
+        <div className="text-center mb-16 reveal">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-4"
+            style={{
+              background: "oklch(72 0.24 210 / 0.1)",
+              border: "1px solid oklch(72 0.24 210 / 0.3)",
+              color: "var(--neon-blue)",
+            }}
+          >
+            <Zap size={14} /> What We Build
+          </div>
+          <h2 className="font-display font-bold text-4xl md:text-5xl text-white mb-4">
+            Our <span className="gradient-text">Services</span>
           </h2>
-          <div className="gold-divider mx-auto mt-6" />
+          <p className="text-white/50 max-w-xl mx-auto">
+            End-to-end technology solutions engineered for impact.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-          {signatureDishes.map((dish, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {services.map((svc, i) => (
             <div
-              key={dish.name}
-              className={`reveal reveal-delay-${(i % 4) + 1} group relative overflow-hidden cursor-default`}
+              key={svc.title}
+              className="gradient-border rounded-2xl p-6 group hover:scale-[1.02] transition-transform duration-300 reveal"
+              style={{ transitionDelay: `${i * 80}ms` }}
+              data-ocid={`services.item.${i + 1}`}
             >
-              {/* Fixed-height container — crops phone chrome via object-fit */}
-              <div className="h-64 overflow-hidden">
-                <img
-                  src={dish.img}
-                  alt={dish.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  style={{ objectPosition: dish.position }}
-                />
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all group-hover:scale-110"
+                style={{
+                  background: svc.colorBg,
+                  border: svc.colorBorder,
+                }}
+              >
+                <svc.icon size={22} style={{ color: svc.color }} />
               </div>
-              {/* Dark gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.008_45/0.95)] via-[oklch(0.08_0.008_45/0.25)] to-transparent" />
-              {/* Info */}
-              <div className="absolute bottom-0 left-0 right-0 p-5">
-                <h3 className="font-display text-base font-bold text-cream leading-tight mb-1">
-                  {dish.name}
-                </h3>
-                <p className="font-body text-xs text-cream-muted leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {dish.desc}
-                </p>
-              </div>
-              {/* Corner accents on hover */}
-              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[oklch(0.72_0.14_68)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[oklch(0.72_0.14_68)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <h3 className="font-display font-semibold text-white text-lg mb-2">
+                {svc.title}
+              </h3>
+              <p className="text-white/50 text-sm leading-relaxed">
+                {svc.desc}
+              </p>
             </div>
           ))}
         </div>
@@ -529,99 +825,144 @@ function SignatureDishes() {
   );
 }
 
-// ─── Menu ─────────────────────────────────────────────────────────────────────
-function MenuSection() {
+// ─── Tech Stack ───────────────────────────────────────────────────────────────
+const techStack = [
+  { name: "React", color: "#61dafb" },
+  { name: "Python", color: "#3776ab" },
+  { name: "TensorFlow", color: "#ff6f00" },
+  { name: "Node.js", color: "#339933" },
+  { name: "AWS", color: "#ff9900" },
+  { name: "MongoDB", color: "#47a248" },
+  { name: "Flutter", color: "#02569b" },
+  { name: "OpenAI", color: "#412991" },
+];
+
+function TechStackSection() {
   return (
-    <section id="menu" className="py-24 md:py-32 bg-[oklch(0.14_0.009_45)]">
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="text-center mb-14 reveal">
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-gold mb-3">
-            Explore
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-cream">
-            Our Menu
+    <section className="py-20" style={{ background: "#070714" }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12 reveal">
+          <h2 className="font-display font-bold text-3xl md:text-4xl text-white mb-3">
+            Our <span className="gradient-text">Tech Stack</span>
           </h2>
-          <div className="gold-divider mx-auto mt-6" />
+          <p className="text-white/40 text-sm">
+            Powered by industry-leading technologies
+          </p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-4 reveal">
+          {techStack.map((tech) => (
+            <div
+              key={tech.name}
+              className="glass-card px-6 py-3 rounded-full flex items-center gap-2 hover:scale-105 transition-transform cursor-default"
+              style={{ border: `1px solid ${tech.color}40` }}
+            >
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{
+                  background: tech.color,
+                  boxShadow: `0 0 8px ${tech.color}`,
+                }}
+              />
+              <span className="text-white font-medium text-sm">
+                {tech.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Products ─────────────────────────────────────────────────────────────────
+const products = [
+  {
+    title: "AI Trading Dashboard",
+    desc: "Real-time market intelligence with ML-driven predictions and automated trading signals.",
+    img: "/assets/generated/mockup-trading-dashboard.dim_800x600.png",
+    tag: "FinTech",
+  },
+  {
+    title: "SaaS Admin Panel",
+    desc: "Enterprise-grade admin dashboard with advanced analytics, role management, and AI insights.",
+    img: "/assets/generated/mockup-saas-panel.dim_800x600.png",
+    tag: "SaaS",
+  },
+  {
+    title: "AI Mobile App",
+    desc: "Smart mobile experience with on-device AI, personalized recommendations, and real-time sync.",
+    img: "/assets/generated/mockup-mobile-app.dim_400x800.png",
+    tag: "Mobile",
+  },
+  {
+    title: "AI Chatbot Platform",
+    desc: "Enterprise conversational AI platform with NLP, multi-language support, and CRM integrations.",
+    img: "/assets/generated/mockup-chatbot.dim_800x600.png",
+    tag: "AI/ML",
+  },
+];
+
+function ProductsSection() {
+  return (
+    <section id="products" className="py-24" style={{ background: "#050510" }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16 reveal">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-4"
+            style={{
+              background: "oklch(55 0.28 295 / 0.1)",
+              border: "1px solid oklch(55 0.28 295 / 0.3)",
+              color: "oklch(65 0.28 295)",
+            }}
+          >
+            <Award size={14} /> Featured Work
+          </div>
+          <h2 className="font-display font-bold text-4xl md:text-5xl text-white mb-4">
+            Product <span className="gradient-text">Showcase</span>
+          </h2>
         </div>
 
-        <div className="reveal reveal-delay-1">
-          <Tabs defaultValue="biscuits">
-            <TabsList className="flex flex-wrap gap-1 bg-[oklch(0.12_0.008_45)] border border-[oklch(0.25_0.015_55)] p-2 rounded-none mb-8 h-auto justify-start">
-              {menuCategories.map((cat) => (
-                <TabsTrigger
-                  key={cat.id}
-                  value={cat.id}
-                  data-ocid="menu.tab"
-                  className="font-body text-xs tracking-widest uppercase px-4 py-2 rounded-none text-cream-muted data-[state=active]:bg-gold data-[state=active]:text-[oklch(0.12_0.008_45)] data-[state=active]:shadow-none hover:text-cream transition-colors"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {products.map((p, i) => (
+            <div
+              key={p.title}
+              className="gradient-border rounded-2xl overflow-hidden group hover:scale-[1.02] transition-transform duration-300 reveal"
+              style={{ transitionDelay: `${i * 100}ms` }}
+              data-ocid={`products.item.${i + 1}`}
+            >
+              <div
+                className="relative overflow-hidden"
+                style={{ height: "220px" }}
+              >
+                <img
+                  src={p.img}
+                  alt={p.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to top, oklch(10 0.02 264) 0%, transparent 60%)",
+                  }}
+                />
+                <span
+                  className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold"
+                  style={{
+                    background: "oklch(72 0.24 210 / 0.2)",
+                    border: "1px solid oklch(72 0.24 210 / 0.5)",
+                    color: "var(--neon-blue)",
+                  }}
                 >
-                  {cat.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            {menuCategories.map((cat) => (
-              <TabsContent key={cat.id} value={cat.id} className="mt-0">
-                <div className="bg-[oklch(0.12_0.008_45)] border border-[oklch(0.25_0.015_55)] p-6 md:p-10">
-                  <h3 className="font-display text-2xl font-bold text-gold mb-8 pb-4 border-b border-[oklch(0.25_0.015_55)]">
-                    {cat.label}
-                  </h3>
-                  <div className="space-y-5">
-                    {cat.items.map((item) => (
-                      <div key={item.name} className="flex items-end">
-                        <span className="font-body text-cream text-base">
-                          {item.name}
-                        </span>
-                        <span className="menu-dots" />
-                        <span className="font-display text-gold font-semibold text-base whitespace-nowrap">
-                          {item.price}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Gallery ──────────────────────────────────────────────────────────────────
-function Gallery() {
-  return (
-    <section id="gallery" className="py-24 md:py-32 bg-espresso">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-14 reveal">
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-gold mb-3">
-            Visual Journey
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-cream">
-            Experience Buttermilk &amp; Bourbon
-          </h2>
-          <div className="gold-divider mx-auto mt-6" />
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 reveal reveal-delay-1">
-          {galleryImages.map((img) => (
-            <div
-              key={img.src}
-              className={`group relative overflow-hidden ${img.span}`}
-            >
-              {/* Fixed height — crops phone chrome top & bottom */}
-              <div className="h-56 overflow-hidden">
-                <img
-                  src={img.src}
-                  alt={img.label}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  style={{ objectPosition: img.position }}
-                />
+                  {p.tag}
+                </span>
               </div>
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-[oklch(0.08_0.008_45/0.70)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <p className="font-display text-cream text-sm italic text-center px-4">
-                  {img.label}
+              <div className="p-6">
+                <h3 className="font-display font-semibold text-white text-xl mb-2">
+                  {p.title}
+                </h3>
+                <p className="text-white/50 text-sm leading-relaxed">
+                  {p.desc}
                 </p>
               </div>
             </div>
@@ -632,316 +973,439 @@ function Gallery() {
   );
 }
 
-// ─── Reservation ──────────────────────────────────────────────────────────────
-function Reservation() {
-  const [form, setForm] = useState({
+// ─── Pricing ──────────────────────────────────────────────────────────────────
+const plans = [
+  {
+    name: "Starter",
+    price: "$499",
+    desc: "Perfect for small businesses and MVPs",
+    features: [
+      "5-page responsive website",
+      "Basic AI integration",
+      "Mobile responsive design",
+      "SEO optimization",
+      "1 month support",
+    ],
+    highlight: false,
+    color: "oklch(72 0.24 210)",
+    colorBorder: "1px solid oklch(72 0.24 210 / 0.4)",
+    colorBg: "oklch(72 0.24 210 / 0.15)",
+    colorBorderSoft: "1px solid oklch(72 0.24 210 / 0.3)",
+  },
+  {
+    name: "Professional",
+    price: "$999",
+    desc: "Ideal for growing companies",
+    features: [
+      "15-page web application",
+      "Advanced AI features",
+      "Custom chatbot integration",
+      "Admin dashboard",
+      "API integrations",
+      "3 months support",
+    ],
+    highlight: true,
+    color: "oklch(55 0.28 295)",
+    colorBorder: "1px solid oklch(55 0.28 295 / 0.4)",
+    colorBg: "oklch(55 0.28 295 / 0.15)",
+    colorBorderSoft: "1px solid oklch(55 0.28 295 / 0.3)",
+  },
+  {
+    name: "Enterprise",
+    price: "$2,499",
+    desc: "For large-scale enterprise projects",
+    features: [
+      "Unlimited pages & features",
+      "Full AI/ML system",
+      "Mobile app included",
+      "Cloud infrastructure",
+      "Dedicated team",
+      "12 months support",
+    ],
+    highlight: false,
+    color: "oklch(78 0.18 70)",
+    colorBorder: "1px solid oklch(78 0.18 70 / 0.4)",
+    colorBg: "oklch(78 0.18 70 / 0.15)",
+    colorBorderSoft: "1px solid oklch(78 0.18 70 / 0.3)",
+  },
+];
+
+function PricingSection() {
+  return (
+    <section id="pricing" className="py-24" style={{ background: "#070714" }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16 reveal">
+          <h2 className="font-display font-bold text-4xl md:text-5xl text-white mb-4">
+            Simple <span className="gradient-text">Pricing</span>
+          </h2>
+          <p className="text-white/50">Transparent pricing. No hidden fees.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          {plans.map((plan, i) => (
+            <div
+              key={plan.name}
+              className={`relative rounded-2xl p-8 reveal ${
+                plan.highlight ? "scale-105 glow-purple" : ""
+              }`}
+              style={{
+                background: plan.highlight
+                  ? "linear-gradient(135deg, oklch(55 0.28 295 / 0.2), oklch(72 0.24 210 / 0.1))"
+                  : "oklch(12 0.03 264)",
+                border: `1px solid ${plan.color.replace(")", " / 0.4)")}`,
+                transitionDelay: `${i * 100}ms`,
+              }}
+              data-ocid={`pricing.item.${i + 1}`}
+            >
+              {plan.highlight && (
+                <div
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold text-white"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, oklch(55 0.28 295), oklch(72 0.24 210))",
+                  }}
+                >
+                  Most Popular
+                </div>
+              )}
+
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+                style={{
+                  background: plan.colorBg,
+                  border: plan.colorBorderSoft,
+                }}
+              >
+                <Zap size={18} style={{ color: plan.color }} />
+              </div>
+
+              <h3 className="font-display font-bold text-white text-xl mb-1">
+                {plan.name}
+              </h3>
+              <p className="text-white/40 text-sm mb-4">{plan.desc}</p>
+              <div className="mb-6">
+                <span className="font-display font-bold text-4xl text-white">
+                  {plan.price}
+                </span>
+                <span className="text-white/40 text-sm ml-1">/ project</span>
+              </div>
+
+              <div className="space-y-3 mb-8">
+                {plan.features.map((f) => (
+                  <div key={f} className="flex items-start gap-2">
+                    <CheckCircle
+                      size={16}
+                      style={{ color: plan.color, marginTop: 2, flexShrink: 0 }}
+                    />
+                    <span className="text-white/60 text-sm">{f}</span>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className={
+                  plan.highlight
+                    ? "w-full py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 btn-neon relative z-10"
+                    : "w-full py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 btn-outline-neon"
+                }
+                data-ocid={`pricing.primary_button.${i + 1}`}
+                onClick={() =>
+                  document
+                    .querySelector("#contact")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+              >
+                Get Started
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Why Yadav Tech ───────────────────────────────────────────────────────────
+const reasons = [
+  {
+    icon: Award,
+    value: "100+",
+    label: "Projects Delivered",
+    desc: "Successful products across web, mobile, and AI domains.",
+  },
+  {
+    icon: Users,
+    value: "50+",
+    label: "Happy Clients",
+    desc: "Trusted by startups and enterprises across 10+ countries.",
+  },
+  {
+    icon: Star,
+    value: "5 Yrs",
+    label: "Experience",
+    desc: "Deep expertise in AI, cloud, and modern software engineering.",
+  },
+  {
+    icon: HeadphonesIcon,
+    value: "24/7",
+    label: "Support",
+    desc: "Round-the-clock dedicated support and rapid response times.",
+  },
+];
+
+function WhySection() {
+  return (
+    <section className="py-24" style={{ background: "#050510" }}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16 reveal">
+          <h2 className="font-display font-bold text-4xl md:text-5xl text-white mb-4">
+            Why Choose <span className="gradient-text">Yadav Tech</span>?
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {reasons.map((r, i) => (
+            <div
+              key={r.label}
+              className="gradient-border rounded-2xl p-6 text-center hover:scale-105 transition-transform duration-300 reveal"
+              style={{ transitionDelay: `${i * 80}ms` }}
+            >
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
+                style={{
+                  background: "oklch(72 0.24 210 / 0.15)",
+                  border: "1px solid oklch(72 0.24 210 / 0.3)",
+                }}
+              >
+                <r.icon size={22} style={{ color: "var(--neon-blue)" }} />
+              </div>
+              <p className="font-display font-bold text-3xl text-white gradient-text mb-1">
+                {r.value}
+              </p>
+              <p className="font-semibold text-white mb-2">{r.label}</p>
+              <p className="text-white/40 text-sm leading-relaxed">{r.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Global Vision ────────────────────────────────────────────────────────────
+function GlobalSection() {
+  return (
+    <section className="py-24" style={{ background: "#070714" }}>
+      <div className="max-w-5xl mx-auto px-6 text-center reveal">
+        <div
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
+          style={{
+            background: "oklch(78 0.18 70 / 0.1)",
+            border: "1px solid oklch(78 0.18 70 / 0.3)",
+            color: "var(--gold)",
+          }}
+        >
+          <Globe size={14} /> Global Reach
+        </div>
+        <h2 className="font-display font-bold text-4xl md:text-5xl text-white mb-6">
+          Serving Clients <span className="gradient-text-gold">Worldwide</span>
+        </h2>
+        <p className="text-white/50 text-lg leading-relaxed max-w-3xl mx-auto mb-10">
+          From Silicon Valley startups to European enterprises, Yadav Tech
+          delivers world-class AI solutions without borders. Our remote-first
+          team operates across time zones to ensure your project is always
+          moving forward.
+        </p>
+        <div className="flex flex-wrap justify-center gap-6">
+          {[
+            "🇮🇳 India",
+            "🇺🇸 USA",
+            "🇬🇧 UK",
+            "🇩🇪 Germany",
+            "🇦🇪 UAE",
+            "🇸🇬 Singapore",
+          ].map((loc) => (
+            <div
+              key={loc}
+              className="glass-card px-5 py-2.5 rounded-full text-white/70 text-sm font-medium"
+              style={{ border: "1px solid oklch(72 0.24 210 / 0.2)" }}
+            >
+              {loc}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Contact ──────────────────────────────────────────────────────────────────
+function ContactSection() {
+  const [formData, setFormData] = useState({
     name: "",
-    phone: "",
     email: "",
-    date: "",
-    time: "",
-    guests: "",
+    message: "",
   });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 4000);
+    setFormData({ name: "", email: "", message: "" });
   };
 
   return (
-    <section
-      id="reservations"
-      className="py-24 md:py-32 bg-[oklch(0.14_0.009_45)]"
-    >
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-14 reveal">
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-gold mb-3">
-            Join Us
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-cream">
-            Reserve Your Table
-          </h2>
-          <p className="font-body text-cream-muted mt-4 max-w-md mx-auto">
-            Join us for an unforgettable Southern dining experience
-          </p>
-          <div className="gold-divider mx-auto mt-6" />
-        </div>
-
-        <div className="reveal reveal-delay-1 bg-[oklch(0.12_0.008_45)] border border-[oklch(0.72_0.14_68/0.4)] p-8 md:p-12 relative">
-          {/* Gold corner accents */}
-          <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[oklch(0.72_0.14_68)]" />
-          <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-[oklch(0.72_0.14_68)]" />
-          <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-[oklch(0.72_0.14_68)]" />
-          <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[oklch(0.72_0.14_68)]" />
-
-          {submitted ? (
-            <div
-              data-ocid="reservation.success_state"
-              className="text-center py-12"
-            >
-              <div className="w-16 h-16 rounded-full border-2 border-[oklch(0.72_0.14_68)] mx-auto mb-6 flex items-center justify-center">
-                <span className="text-gold text-2xl">✓</span>
-              </div>
-              <h3 className="font-display text-3xl font-bold text-cream mb-3">
-                Thank You!
-              </h3>
-              <p className="font-body text-cream-muted">
-                We&apos;ll confirm your reservation shortly.
-              </p>
-              <button
-                type="button"
-                onClick={() => setSubmitted(false)}
-                className="mt-8 font-body text-xs tracking-widest uppercase text-gold hover:text-[oklch(0.82_0.12_80)] transition-colors border-b border-[oklch(0.55_0.10_68)] pb-0.5"
-              >
-                Make Another Reservation
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label className="font-body text-xs tracking-widest uppercase text-gold mb-2 block">
-                    Full Name
-                  </Label>
-                  <Input
-                    data-ocid="reservation.name_input"
-                    type="text"
-                    placeholder="Your full name"
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    required
-                    className="bg-[oklch(0.16_0.01_45)] border-[oklch(0.30_0.02_60)] text-cream placeholder:text-[oklch(0.40_0.01_60)] focus:border-[oklch(0.72_0.14_68)] rounded-none h-12 font-body"
-                  />
-                </div>
-                <div>
-                  <Label className="font-body text-xs tracking-widest uppercase text-gold mb-2 block">
-                    Phone Number
-                  </Label>
-                  <Input
-                    data-ocid="reservation.phone_input"
-                    type="tel"
-                    placeholder="(617) 000-0000"
-                    value={form.phone}
-                    onChange={(e) =>
-                      setForm({ ...form, phone: e.target.value })
-                    }
-                    required
-                    className="bg-[oklch(0.16_0.01_45)] border-[oklch(0.30_0.02_60)] text-cream placeholder:text-[oklch(0.40_0.01_60)] focus:border-[oklch(0.72_0.14_68)] rounded-none h-12 font-body"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <Label className="font-body text-xs tracking-widest uppercase text-gold mb-2 block">
-                    Email Address
-                  </Label>
-                  <Input
-                    data-ocid="reservation.email_input"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={form.email}
-                    onChange={(e) =>
-                      setForm({ ...form, email: e.target.value })
-                    }
-                    required
-                    className="bg-[oklch(0.16_0.01_45)] border-[oklch(0.30_0.02_60)] text-cream placeholder:text-[oklch(0.40_0.01_60)] focus:border-[oklch(0.72_0.14_68)] rounded-none h-12 font-body"
-                  />
-                </div>
-                <div>
-                  <Label className="font-body text-xs tracking-widest uppercase text-gold mb-2 block">
-                    Date
-                  </Label>
-                  <Input
-                    data-ocid="reservation.date_input"
-                    type="date"
-                    value={form.date}
-                    onChange={(e) => setForm({ ...form, date: e.target.value })}
-                    required
-                    className="bg-[oklch(0.16_0.01_45)] border-[oklch(0.30_0.02_60)] text-cream focus:border-[oklch(0.72_0.14_68)] rounded-none h-12 font-body [color-scheme:dark]"
-                  />
-                </div>
-                <div>
-                  <Label className="font-body text-xs tracking-widest uppercase text-gold mb-2 block">
-                    Time
-                  </Label>
-                  <Select
-                    value={form.time}
-                    onValueChange={(v) => setForm({ ...form, time: v })}
-                    required
-                  >
-                    <SelectTrigger
-                      data-ocid="reservation.time_select"
-                      className="bg-[oklch(0.16_0.01_45)] border-[oklch(0.30_0.02_60)] text-cream rounded-none h-12 font-body"
-                    >
-                      <SelectValue placeholder="Select time" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[oklch(0.16_0.01_45)] border-[oklch(0.30_0.02_60)] rounded-none">
-                      {[
-                        "5:00 PM",
-                        "5:30 PM",
-                        "6:00 PM",
-                        "6:30 PM",
-                        "7:00 PM",
-                        "7:30 PM",
-                        "8:00 PM",
-                        "8:30 PM",
-                        "9:00 PM",
-                      ].map((t) => (
-                        <SelectItem
-                          key={t}
-                          value={t}
-                          className="text-cream font-body focus:bg-[oklch(0.22_0.012_45)] focus:text-gold"
-                        >
-                          {t}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="md:col-span-2">
-                  <Label className="font-body text-xs tracking-widest uppercase text-gold mb-2 block">
-                    Number of Guests
-                  </Label>
-                  <Select
-                    value={form.guests}
-                    onValueChange={(v) => setForm({ ...form, guests: v })}
-                    required
-                  >
-                    <SelectTrigger
-                      data-ocid="reservation.guests_select"
-                      className="bg-[oklch(0.16_0.01_45)] border-[oklch(0.30_0.02_60)] text-cream rounded-none h-12 font-body"
-                    >
-                      <SelectValue placeholder="Select party size" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[oklch(0.16_0.01_45)] border-[oklch(0.30_0.02_60)] rounded-none">
-                      {[
-                        "1–2 Guests",
-                        "3–4 Guests",
-                        "5–6 Guests",
-                        "7–8 Guests",
-                        "Large Party (9+)",
-                      ].map((g) => (
-                        <SelectItem
-                          key={g}
-                          value={g}
-                          className="text-cream font-body focus:bg-[oklch(0.22_0.012_45)] focus:text-gold"
-                        >
-                          {g}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="mt-8">
-                <Button
-                  data-ocid="reservation.submit_button"
-                  type="submit"
-                  className="w-full bg-gold text-[oklch(0.12_0.008_45)] hover:bg-[oklch(0.82_0.12_80)] font-body text-sm tracking-[0.2em] uppercase h-14 rounded-none font-semibold transition-all duration-300"
-                >
-                  Request Reservation
-                </Button>
-              </div>
-            </form>
-          )}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Location ─────────────────────────────────────────────────────────────────
-function Location() {
-  return (
-    <section id="location" className="py-24 md:py-32 bg-espresso">
+    <section id="contact" className="py-24" style={{ background: "#050510" }}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-14 reveal">
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-gold mb-3">
-            Directions
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-cream">
-            Find Us
+        <div className="text-center mb-16 reveal">
+          <h2 className="font-display font-bold text-4xl md:text-5xl text-white mb-4">
+            Let's <span className="gradient-text">Connect</span>
           </h2>
-          <div className="gold-divider mx-auto mt-6" />
+          <p className="text-white/50">
+            Ready to build something extraordinary? Let's talk.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 reveal reveal-delay-1">
-          <div
-            className="overflow-hidden border border-[oklch(0.25_0.015_55)]"
-            style={{ aspectRatio: "4/3" }}
-          >
-            <iframe
-              data-ocid="location.map_marker"
-              src="https://maps.google.com/maps?q=160+Commonwealth+Ave,+Boston,+MA&t=&z=15&ie=UTF8&iwloc=&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0, filter: "grayscale(0.3) contrast(1.1)" }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Buttermilk & Bourbon location"
-            />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Info */}
+          <div className="reveal">
+            <div className="space-y-6">
+              {[
+                {
+                  icon: Phone,
+                  label: "Phone",
+                  value: "+91 7678643475",
+                  href: "tel:+917678643475",
+                },
+                {
+                  icon: Mail,
+                  label: "Email",
+                  value: "yadavtech@gmail.com",
+                  href: "mailto:yadavtech@gmail.com",
+                },
+                {
+                  icon: MapPin,
+                  label: "Location",
+                  value: "India • Global Remote",
+                  href: "#",
+                },
+              ].map((info) => (
+                <a
+                  key={info.label}
+                  href={info.href}
+                  className="flex items-center gap-4 gradient-border rounded-xl p-4 group hover:scale-[1.02] transition-transform"
+                >
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: "oklch(72 0.24 210 / 0.15)",
+                      border: "1px solid oklch(72 0.24 210 / 0.3)",
+                    }}
+                  >
+                    <info.icon
+                      size={18}
+                      style={{ color: "var(--neon-blue)" }}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-white/40 text-xs">{info.label}</p>
+                    <p className="text-white font-medium">{info.value}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-col justify-center gap-8">
-            <div className="flex items-start gap-4">
-              <MapPin className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="font-body text-xs tracking-widest uppercase text-gold mb-1">
-                  Address
-                </p>
-                <p className="font-body text-cream">160 Commonwealth Ave</p>
-                <p className="font-body text-cream">Boston, MA 02116</p>
-                <p className="font-body text-cream-muted text-sm mt-1">
-                  Back Bay Neighborhood
+          {/* Form */}
+          <div className="gradient-border rounded-2xl p-8 reveal">
+            {submitted ? (
+              <div
+                className="text-center py-12"
+                data-ocid="contact.success_state"
+              >
+                <CheckCircle
+                  size={48}
+                  style={{ color: "var(--neon-blue)" }}
+                  className="mx-auto mb-4"
+                />
+                <h3 className="font-display font-bold text-white text-xl mb-2">
+                  Message Sent!
+                </h3>
+                <p className="text-white/50">
+                  We'll get back to you within 24 hours.
                 </p>
               </div>
-            </div>
-
-            <div className="border-t border-[oklch(0.25_0.015_55)] pt-8 flex items-start gap-4">
-              <Clock className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="font-body text-xs tracking-widest uppercase text-gold mb-3">
-                  Hours
-                </p>
-                <div className="space-y-2">
-                  {[
-                    { day: "Mon – Thu", hours: "5:00 PM – 10:00 PM" },
-                    { day: "Fri – Sat", hours: "5:00 PM – 11:00 PM" },
-                    { day: "Sunday", hours: "4:00 PM – 9:00 PM" },
-                  ].map((h) => (
-                    <div key={h.day} className="flex justify-between gap-8">
-                      <span className="font-body text-cream-muted text-sm">
-                        {h.day}
-                      </span>
-                      <span className="font-body text-cream text-sm">
-                        {h.hours}
-                      </span>
-                    </div>
-                  ))}
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                  <label
+                    htmlFor="contact-name"
+                    className="text-white/60 text-sm mb-2 block"
+                  >
+                    Your Name
+                  </label>
+                  <Input
+                    id="contact-name"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, name: e.target.value }))
+                    }
+                    placeholder="Nitesh Yadav"
+                    required
+                    className="bg-transparent border-white/10 text-white placeholder:text-white/30 focus:border-primary"
+                    data-ocid="contact.input"
+                  />
                 </div>
-              </div>
-            </div>
-
-            <div className="border-t border-[oklch(0.25_0.015_55)] pt-8 space-y-4">
-              <div className="flex items-center gap-4">
-                <Phone className="w-5 h-5 text-gold flex-shrink-0" />
-                <a
-                  href="tel:+16172661122"
-                  className="font-body text-cream hover:text-gold transition-colors"
+                <div>
+                  <label
+                    htmlFor="contact-email"
+                    className="text-white/60 text-sm mb-2 block"
+                  >
+                    Email Address
+                  </label>
+                  <Input
+                    id="contact-email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, email: e.target.value }))
+                    }
+                    placeholder="you@example.com"
+                    required
+                    className="bg-transparent border-white/10 text-white placeholder:text-white/30 focus:border-primary"
+                    data-ocid="contact.input"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="contact-message"
+                    className="text-white/60 text-sm mb-2 block"
+                  >
+                    Message
+                  </label>
+                  <Textarea
+                    id="contact-message"
+                    value={formData.message}
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, message: e.target.value }))
+                    }
+                    placeholder="Tell us about your project..."
+                    rows={4}
+                    required
+                    className="bg-transparent border-white/10 text-white placeholder:text-white/30 focus:border-primary resize-none"
+                    data-ocid="contact.textarea"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="btn-neon w-full py-3 rounded-xl font-semibold relative z-10 flex items-center justify-center gap-2"
+                  data-ocid="contact.submit_button"
                 >
-                  (617) 266-1122
-                </a>
-              </div>
-              <div className="flex items-center gap-4">
-                <Mail className="w-5 h-5 text-gold flex-shrink-0" />
-                <a
-                  href="mailto:info@buttermilkandbourbon.com"
-                  className="font-body text-cream hover:text-gold transition-colors text-sm"
-                >
-                  info@buttermilkandbourbon.com
-                </a>
-              </div>
-            </div>
+                  Send Message <Send size={16} />
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>
@@ -952,139 +1416,93 @@ function Location() {
 // ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
   const year = new Date().getFullYear();
-  const hostname =
-    typeof window !== "undefined" ? window.location.hostname : "";
-
   return (
-    <footer className="bg-[oklch(0.09_0.007_45)] border-t border-[oklch(0.20_0.012_55)] py-16">
+    <footer
+      className="py-12"
+      style={{
+        background: "#030309",
+        borderTop: "1px solid oklch(72 0.24 210 / 0.15)",
+      }}
+    >
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full border border-[oklch(0.72_0.14_68)] flex items-center justify-center">
-                <span className="font-display text-sm font-bold text-gold">
-                  B&amp;B
-                </span>
-              </div>
-              <span className="font-display text-lg text-cream">
-                Buttermilk &amp; Bourbon
-              </span>
-            </div>
-            <p className="font-body text-cream-muted text-sm leading-relaxed">
-              Southern Comfort Food &amp; Bourbon Bar
-              <br />
-              160 Commonwealth Ave, Boston, MA
-            </p>
-            <div className="flex gap-4 mt-6">
-              {[
-                { Icon: Instagram, label: "Instagram" },
-                { Icon: Facebook, label: "Facebook" },
-                { Icon: Twitter, label: "Twitter" },
-              ].map(({ Icon, label }) => (
-                <button
-                  key={label}
-                  type="button"
-                  aria-label={label}
-                  className="w-9 h-9 border border-[oklch(0.30_0.02_60)] flex items-center justify-center text-cream-muted hover:text-gold hover:border-[oklch(0.72_0.14_68)] transition-colors"
-                >
-                  <Icon className="w-4 h-4" />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <p className="font-body text-xs tracking-widest uppercase text-gold mb-6">
-              Quick Links
-            </p>
-            <ul className="space-y-3">
-              {[
-                { label: "About Us", id: "about" },
-                { label: "Our Menu", id: "menu" },
-                { label: "Gallery", id: "gallery" },
-                { label: "Reservations", id: "reservations" },
-                { label: "Location", id: "location" },
-              ].map((link) => (
-                <li key={link.id}>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      document
-                        .getElementById(link.id)
-                        ?.scrollIntoView({ behavior: "smooth" })
-                    }
-                    className="font-body text-cream-muted hover:text-gold transition-colors text-sm"
-                  >
-                    {link.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <p className="font-body text-xs tracking-widest uppercase text-gold mb-6">
-              Contact
-            </p>
-            <div className="space-y-3">
-              <p className="font-body text-cream-muted text-sm">
-                160 Commonwealth Ave
-                <br />
-                Boston, MA 02116
-              </p>
-              <a
-                href="tel:+16172661122"
-                className="block font-body text-cream-muted hover:text-gold transition-colors text-sm"
-              >
-                (617) 266-1122
-              </a>
-              <a
-                href="mailto:info@buttermilkandbourbon.com"
-                className="block font-body text-cream-muted hover:text-gold transition-colors text-sm break-all"
-              >
-                info@buttermilkandbourbon.com
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-[oklch(0.20_0.012_55)] pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-body text-cream-muted text-xs">
-            © {year} Buttermilk &amp; Bourbon. All Rights Reserved.
-          </p>
-          <p className="font-body text-cream-muted text-xs">
-            Built with ♥ using{" "}
-            <a
-              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(hostname)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gold hover:text-[oklch(0.82_0.12_80)] transition-colors"
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{
+                background:
+                  "linear-gradient(135deg, oklch(72 0.24 210), oklch(55 0.28 295))",
+              }}
             >
-              caffeine.ai
-            </a>
-          </p>
+              <Zap size={16} color="white" />
+            </div>
+            <span className="font-display font-bold text-lg text-white">
+              Yadav <span className="gradient-text">Tech</span>
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-6 text-sm">
+            {[
+              "#home",
+              "#about",
+              "#services",
+              "#products",
+              "#pricing",
+              "#contact",
+            ].map((href) => (
+              <a
+                key={href}
+                href={href}
+                className="text-white/40 hover:text-white transition-colors capitalize"
+              >
+                {href.replace("#", "")}
+              </a>
+            ))}
+          </div>
+
+          <div className="text-center md:text-right">
+            <p className="text-white/30 text-sm">
+              © {year} Yadav Tech. All rights reserved.
+            </p>
+            <p className="text-white/20 text-xs mt-1">
+              Built with ❤️ using{" "}
+              <a
+                href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/40 hover:text-white transition-colors"
+              >
+                caffeine.ai
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
   );
 }
 
-// ─── App root ─────────────────────────────────────────────────────────────────
+// ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
-  useReveal();
+  useScrollReveal();
+
   return (
-    <div className="min-h-screen bg-espresso">
+    <div className="font-body" style={{ background: "#050510" }}>
       <Navbar />
       <main>
-        <Hero />
-        <About />
-        <SignatureDishes />
-        <MenuSection />
-        <Gallery />
-        <Reservation />
-        <Location />
+        <HeroSection />
+        <AboutSection />
+        <ServicesSection />
+        <TechStackSection />
+        <ProductsSection />
+        <PricingSection />
+        <WhySection />
+        <GlobalSection />
+        <ContactSection />
       </main>
       <Footer />
+      <WhatsAppButton />
+      <ChatWidget />
     </div>
   );
 }

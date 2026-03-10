@@ -3,196 +3,271 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Playfair Display";
-  src: url("/assets/fonts/PlayfairDisplay-VariableFont_wght.woff2")
-    format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
+  font-family: "Sora";
+  src: url("/assets/fonts/Sora.woff2") format("woff2");
+  font-weight: 100 800;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "General Sans";
-  src: url("/assets/fonts/GeneralSans-Variable.woff2") format("woff2");
+  font-family: "Outfit";
+  src: url("/assets/fonts/Outfit.woff2") format("woff2");
   font-weight: 100 900;
-  font-style: normal;
   font-display: swap;
 }
 
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono.woff2") format("woff2");
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+:root {
+  --background: 10 0.02 264;
+  --foreground: 96 0.01 264;
+  --card: 12 0.03 264;
+  --card-foreground: 96 0.01 264;
+  --popover: 10 0.02 264;
+  --popover-foreground: 96 0.01 264;
+  --primary: 72 0.24 210;
+  --primary-foreground: 10 0.02 264;
+  --secondary: 65 0.2 295;
+  --secondary-foreground: 96 0.01 264;
+  --muted: 18 0.04 264;
+  --muted-foreground: 60 0.05 264;
+  --accent: 72 0.24 210;
+  --accent-foreground: 96 0.01 264;
+  --destructive: 50 0.22 27;
+  --destructive-foreground: 96 0.01 264;
+  --border: 22 0.05 264;
+  --input: 22 0.05 264;
+  --ring: 72 0.24 210;
+  --radius: 0.5rem;
+  --chart-1: 72 0.24 210;
+  --chart-2: 65 0.2 295;
+  --chart-3: 75 0.22 150;
+  --chart-4: 80 0.18 70;
+  --chart-5: 55 0.22 27;
+  --sidebar: 12 0.03 264;
+  --sidebar-foreground: 96 0.01 264;
+  --sidebar-primary: 72 0.24 210;
+  --sidebar-primary-foreground: 10 0.02 264;
+  --sidebar-accent: 18 0.04 264;
+  --sidebar-accent-foreground: 96 0.01 264;
+  --sidebar-border: 22 0.05 264;
+  --sidebar-ring: 72 0.24 210;
+
+  /* Custom brand tokens */
+  --neon-blue: oklch(72 0.24 210);
+  --neon-blue-glow: oklch(72 0.24 210 / 0.3);
+  --electric-purple: oklch(55 0.28 295);
+  --electric-purple-glow: oklch(55 0.28 295 / 0.3);
+  --gold: oklch(78 0.18 70);
+  --glass-bg: oklch(15 0.03 264 / 0.6);
+  --glass-border: oklch(72 0.24 210 / 0.2);
+}
+
 @layer base {
-  :root {
-    --radius: 0.375rem;
-
-    /* Buttermilk & Bourbon — Dark Luxury Palette */
-    --background: 0.12 0.008 45;
-    --foreground: 0.94 0.018 75;
-    --card: 0.16 0.01 45;
-    --card-foreground: 0.94 0.018 75;
-    --popover: 0.18 0.01 45;
-    --popover-foreground: 0.94 0.018 75;
-    --primary: 0.72 0.14 68;
-    --primary-foreground: 0.12 0.008 45;
-    --secondary: 0.2 0.012 45;
-    --secondary-foreground: 0.88 0.015 75;
-    --muted: 0.22 0.012 45;
-    --muted-foreground: 0.6 0.02 65;
-    --accent: 0.25 0.015 45;
-    --accent-foreground: 0.94 0.018 75;
-    --destructive: 0.65 0.2 22;
-    --destructive-foreground: 0.98 0 0;
-    --border: 0.3 0.02 60;
-    --input: 0.2 0.01 45;
-    --ring: 0.72 0.14 68;
-    --chart-1: 0.72 0.14 68;
-    --chart-2: 0.65 0.12 80;
-    --chart-3: 0.55 0.1 55;
-    --chart-4: 0.45 0.08 40;
-    --chart-5: 0.35 0.06 30;
-    --sidebar: 0.14 0.008 45;
-    --sidebar-foreground: 0.94 0.018 75;
-    --sidebar-primary: 0.72 0.14 68;
-    --sidebar-primary-foreground: 0.12 0.008 45;
-    --sidebar-accent: 0.2 0.01 45;
-    --sidebar-accent-foreground: 0.94 0.018 75;
-    --sidebar-border: 0.25 0.015 55;
-    --sidebar-ring: 0.72 0.14 68;
-
-    /* Brand tokens */
-    --gold: 0.72 0.14 68;
-    --gold-light: 0.82 0.12 80;
-    --gold-dim: 0.55 0.1 68;
-    --espresso: 0.12 0.008 45;
-    --espresso-mid: 0.18 0.01 45;
-    --cream: 0.94 0.018 75;
-    --cream-muted: 0.7 0.018 70;
-  }
-
   * {
     @apply border-border;
   }
-
   html {
     scroll-behavior: smooth;
   }
-
   body {
-    background-color: oklch(0.12 0.008 45);
-    color: oklch(0.94 0.018 75);
-    font-family: "General Sans", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    font-family: "Playfair Display", serif;
+    @apply bg-background text-foreground;
+    font-family: "Outfit", system-ui, sans-serif;
+    background: #050510;
+    overflow-x: hidden;
   }
 }
 
-@layer utilities {
-  .font-display {
-    font-family: "Playfair Display", serif;
-  }
-  .font-body {
-    font-family: "General Sans", sans-serif;
-  }
+/* AI Grid background */
+.ai-grid-bg {
+  background-image: linear-gradient(
+      oklch(72 0.24 210 / 0.08) 1px,
+      transparent 1px
+    ), linear-gradient(90deg, oklch(72 0.24 210 / 0.08) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
 
-  .text-gold {
-    color: oklch(var(--gold));
+@keyframes gridMove {
+  0% {
+    background-position: 0 0;
   }
-  .text-gold-light {
-    color: oklch(var(--gold-light));
+  100% {
+    background-position: 60px 60px;
   }
-  .text-cream {
-    color: oklch(var(--cream));
-  }
-  .text-cream-muted {
-    color: oklch(var(--cream-muted));
-  }
+}
 
-  .bg-espresso {
-    background-color: oklch(var(--espresso));
-  }
-  .bg-espresso-mid {
-    background-color: oklch(var(--espresso-mid));
-  }
-  .bg-gold {
-    background-color: oklch(var(--gold));
-  }
-  .border-gold {
-    border-color: oklch(var(--gold));
-  }
-  .border-gold-dim {
-    border-color: oklch(var(--gold-dim));
-  }
+/* Glass card */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
 
-  /* Scroll-reveal */
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .reveal-delay-1 {
-    transition-delay: 0.10s;
-  }
-  .reveal-delay-2 {
-    transition-delay: 0.20s;
-  }
-  .reveal-delay-3 {
-    transition-delay: 0.30s;
-  }
-  .reveal-delay-4 {
-    transition-delay: 0.40s;
-  }
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  /* Decorative gold divider */
-  .gold-divider {
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      oklch(var(--gold)),
-      transparent
-    );
-  }
+.gradient-text-gold {
+  background: linear-gradient(135deg, var(--gold), var(--neon-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  /* Menu dotted price line */
-  .menu-dots {
-    flex: 1;
-    border-bottom: 1px dotted oklch(0.55 0.1 68 / 0.45);
-    margin: 0 12px;
-    margin-bottom: 4px;
-  }
+/* Glow effects */
+.glow-blue {
+  box-shadow: 0 0 30px var(--neon-blue-glow), 0 0 60px var(--neon-blue-glow);
+}
 
-  /* Keyframes */
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
+.glow-purple {
+  box-shadow: 0 0 30px var(--electric-purple-glow), 0 0 60px
+    var(--electric-purple-glow);
+}
+
+.text-glow-blue {
+  text-shadow: 0 0 20px var(--neon-blue-glow);
+}
+
+/* Gradient border */
+.gradient-border {
+  position: relative;
+  background: var(--glass-bg);
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Neon button */
+.btn-neon {
+  background: linear-gradient(135deg, oklch(72 0.24 210), oklch(55 0.28 295));
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-neon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, oklch(80 0.24 210), oklch(65 0.28 295));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-neon:hover::before {
+  opacity: 1;
+}
+
+.btn-neon:hover {
+  box-shadow: 0 0 30px var(--neon-blue-glow), 0 4px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-outline-neon {
+  background: transparent;
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-neon:hover {
+  background: oklch(72 0.24 210 / 0.1);
+  box-shadow: 0 0 20px var(--neon-blue-glow);
+  transform: translateY(-2px);
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Floating animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
   }
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
+  50% {
+    transform: translateY(-20px);
   }
-  .animate-accordion-down {
-    animation: accordion-down 0.2s ease-out;
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Pulse glow */
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px oklch(72 0.24 210 / 0.3);
   }
-  .animate-accordion-up {
-    animation: accordion-up 0.2s ease-out;
+  50% {
+    box-shadow: 0 0 40px oklch(72 0.24 210 / 0.4), 0 0 80px
+      oklch(72 0.24 210 / 0.2);
   }
+}
+
+.pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* Chat widget */
+.chat-widget {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050510;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(72 0.24 210 / 0.4);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(72 0.24 210 / 0.7);
+}
+
+/* Hamburger animation */
+.hamburger-line {
+  transition: all 0.3s ease;
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: white;
 }
